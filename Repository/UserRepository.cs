@@ -51,5 +51,13 @@ namespace tparf.Repository
         {
             return _context.Orders.Where(p => p.User.Id == userId).Select(p => p.Product).ToList();
         }
+
+        public decimal GetTotalPrice(Guid userId)
+        {
+            var userTotalPrice = _context.Orders.Where(u => u.User.Id == userId);
+            if (userTotalPrice.Count() == 0)
+                return 0;
+            return (decimal)userTotalPrice.Sum(p => p.Product.Price);
+        }
     }
 }

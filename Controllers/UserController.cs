@@ -93,5 +93,18 @@ namespace tparf.Controllers
             }
             return Ok("Успешно создано!");
         }
+
+        [HttpGet("{userId}/totalprice")]
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(400)]
+        public IActionResult GetTotalPrice(Guid userId)
+        {
+            if (!_userRepository.UserExists(userId))
+                return NotFound();
+            var userTotalPrice = _userRepository.GetTotalPrice(userId);
+            if (!ModelState.IsValid)
+                return BadRequest();
+            return Ok(userTotalPrice);
+        }
     }
 }

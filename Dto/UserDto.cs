@@ -10,5 +10,6 @@ namespace tparf.Dto
         public string Password { get; set; }
         public string Phone { get; set; }
         public Role UserRole { get; set; }
+        public decimal TotalOrdersPrice { get; set; }
     }
 }
