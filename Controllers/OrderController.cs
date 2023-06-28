@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using tparf.Dto;
 using tparf.Interfaces;
@@ -9,19 +11,20 @@ namespace tparf.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IUserRepository _userRepository;
+
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         public OrderController(IOrderRepository orderRepository, 
-            IUserRepository userRepository, 
+ 
             IProductRepository productRepository, 
             IMapper mapper)
         {
             _orderRepository = orderRepository;
-            _userRepository = userRepository;
+
             _productRepository = productRepository;
             _mapper = mapper;
         }
@@ -29,7 +32,7 @@ namespace tparf.Controllers
         [HttpGet("{orderId}")]
         [ProducesResponseType(200, Type = typeof(Order))]
         [ProducesResponseType(400)]
-        public IActionResult GetOrder(Guid orderId)
+        public IActionResult GetOrder(int orderId)
         {
             if (!_orderRepository.OrderExists(orderId))
                 return NotFound();
@@ -51,9 +54,10 @@ namespace tparf.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateOrder([FromQuery] Guid userId, [FromQuery] Guid productId, [FromBody] OrderDto orderCreate)
+        public IActionResult CreateOrder(/*[FromQuery] int userId,*/ [FromQuery] int productId, [FromBody] OrderDto orderCreate)
         {
             if (orderCreate == null)
                 return BadRequest(ModelState);
@@ -63,10 +67,10 @@ namespace tparf.Controllers
 
             var orderMap = _mapper.Map<Order>(orderCreate);
 
-            orderMap.User = _userRepository.GetUser(userId);
+            //orderMap.User = _userRepository.GetUser(userId);
             orderMap.Product = _productRepository.GetProduct(productId);
 
-            if (!_orderRepository.CreateOrder(userId, productId, orderMap))
+            if (!_orderRepository.CreateOrder(/*userId,*/ productId, orderMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);

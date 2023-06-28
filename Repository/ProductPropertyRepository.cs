@@ -16,13 +16,13 @@ namespace tparf.Repository
             _context = context;
             _mapper = mapper;
         }
-        public bool CreateProductProperty(Guid productId, ProductProperty productProperty)
+        public bool CreateProductProperty(int productId, ProductProperty productProperty)
         {
             _context.Add(productProperty);
             return Save();
         }
 
-        public bool ProductPropertyExists(Guid productPropertyId)
+        public bool ProductPropertyExists(int productPropertyId)
         {
             return _context.ProductProperties.Any(o => o.Id == productPropertyId);
         }

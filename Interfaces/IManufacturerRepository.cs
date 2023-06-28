@@ -5,10 +5,10 @@ namespace tparf.Interfaces
     public interface IManufacturerRepository
     {
         ICollection<Manufacturer> GetManufacturers();
-        Manufacturer GetManufacturer(Guid manufacturerId);
-        Manufacturer GetManufacturerByProduct(Guid productId);
-        ICollection<Product> GetProductByManufacturer(Guid manufacturerId);
-        bool ManufacturerExists(Guid manufacturerId);
+        Manufacturer GetManufacturer(int manufacturerId);
+        Manufacturer GetManufacturerByProduct(int productId);
+        ICollection<Product> GetProductByManufacturer(int manufacturerId);
+        bool ManufacturerExists(int manufacturerId);
         bool CreateManufacturer(Manufacturer category);
         bool Save();
     }

@@ -15,7 +15,7 @@ namespace tparf.Repository
             _context = context;
             _mapper = mapper;
         }
-        public bool CategoryExists(Guid categoryId)
+        public bool CategoryExists(int categoryId)
         {
             return _context.Categories.Any(c => c.Id == categoryId);
         }
@@ -31,19 +31,9 @@ namespace tparf.Repository
             return _context.Categories.ToList();
         }
 
-        public Category GetCategory(Guid categoryId)
+        public Category GetCategory(int categoryId)
         {
             return _context.Categories.Where(c => c.Id == categoryId).FirstOrDefault();
-        }
-
-        public Category GetCategoryByProduct(Guid productId)
-        {
-            return _context.Products.Where(o => o.Id == productId).Select(c => c.Category).FirstOrDefault();
-        }
-
-        public ICollection<Product> GetProductByCategories(Guid categoryId)
-        {
-            return _context.Products.Where(c => c.Category.Id == categoryId).ToList();
         }
 
         public bool Save()

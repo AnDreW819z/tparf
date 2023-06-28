@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using tparf.Dto;
+using tparf.Dto.AppUser.OtherObjects;
 using tparf.Interfaces;
 using tparf.Models;
 using tparf.Repository;
@@ -8,6 +11,7 @@ namespace tparf.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class ProductPropertyController : Controller
     {
         private readonly IProductPropertyRepository _productPropertyRepository;
@@ -26,7 +30,8 @@ namespace tparf.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateProductProperty([FromQuery] Guid productId,  [FromBody] ProductPropertyDto productPropertyCreate)
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        public IActionResult CreateProductProperty([FromQuery] int productId,  [FromBody] ProductPropertyDto productPropertyCreate)
         {
             if (productPropertyCreate == null)
                 return BadRequest(ModelState);

@@ -20,12 +20,12 @@ namespace tparf.Repository
             return Save();
         }
 
-        public Manufacturer GetManufacturer(Guid manufacturerId)
+        public Manufacturer GetManufacturer(int manufacturerId)
         {
             return _context.Manufacturers.Where(c => c.Id == manufacturerId).FirstOrDefault();
         }
 
-        public Manufacturer GetManufacturerByProduct(Guid productId)
+        public Manufacturer GetManufacturerByProduct(int productId)
         {
             return _context.Products.Where(o => o.Id == productId).Select(c => c.Manufacturer).FirstOrDefault();
         }
@@ -35,12 +35,12 @@ namespace tparf.Repository
             return _context.Manufacturers.ToList();
         }
 
-        public ICollection<Product> GetProductByManufacturer(Guid manufacturerId)
+        public ICollection<Product> GetProductByManufacturer(int manufacturerId)
         {
             return _context.Products.Where(c => c.Manufacturer.Id == manufacturerId).ToList();
         }
 
-        public bool ManufacturerExists(Guid manufacturerId)
+        public bool ManufacturerExists(int manufacturerId)
         {
             return _context.Manufacturers.Any(c => c.Id == manufacturerId);
         }

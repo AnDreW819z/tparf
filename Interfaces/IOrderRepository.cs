@@ -5,11 +5,11 @@ namespace tparf.Interfaces
     public interface IOrderRepository
     {
         ICollection<Order> GetOrders();
-        Order GetOrder(Guid orderId);
-        ICollection<Order> GetOrdersOfAUser(Guid userId);
-        ICollection<Order> GetOrdersOfAProduct(Guid productId);
-        bool OrderExists(Guid orderId);
-        bool CreateOrder(Guid userId, Guid productId,Order order);
+        Order GetOrder(int orderId);
+        //ICollection<Order> GetOrdersOfAUser(int userId);
+        ICollection<Order> GetOrdersOfAProduct(int productId);
+        bool OrderExists(int orderId);
+        bool CreateOrder(/*int userId,*/ int productId,Order order);
         bool Save();
     }
 }

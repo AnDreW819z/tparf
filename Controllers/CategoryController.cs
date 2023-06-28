@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
 using tparf.Dto;
+using tparf.Dto.AppUser.OtherObjects;
 using tparf.Interfaces;
 using tparf.Models;
 
 namespace tparf.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/categories")]
     [ApiController]
     public class CategoryController : Controller
     {
@@ -33,7 +36,7 @@ namespace tparf.Controllers
         [HttpGet("{categoryId}")]
         [ProducesResponseType(200, Type = typeof(Category))]
         [ProducesResponseType(400)]
-        public IActionResult GetCategory(Guid categoryId)
+        public IActionResult GetCategory(int categoryId)
         {
             if (!_categoryRepository.CategoryExists(categoryId))
                 return NotFound();
@@ -44,37 +47,10 @@ namespace tparf.Controllers
             return Ok(category);
         }
 
-        [HttpGet("{categoryId}/product")]
-        [ProducesResponseType(200, Type = typeof(Product))]
-        [ProducesResponseType(400)]
-        public IActionResult GetProductByCategory(Guid categoryId)
-        {
-            if (!_categoryRepository.CategoryExists(categoryId))
-            {
-                return NotFound();
-            }
-            var productProperty = _mapper.Map<List<ProductDto>>(_categoryRepository.GetProductByCategories(categoryId));
-            if (!ModelState.IsValid)
-                return BadRequest();
-            return Ok(productProperty);
-        }
-
-        [HttpGet("/category/{productId}")]
-        [ProducesResponseType(200, Type = typeof(Category))]
-        [ProducesResponseType(400)]
-        public IActionResult GetCategoryByProduct(Guid productId)
-        {
-            var category = _mapper.Map<CategoryDto>(
-                _categoryRepository.GetCategoryByProduct(productId));
-            if (!ModelState.IsValid)
-                return BadRequest();
-            return Ok(category);
-
-        }
-
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
         public IActionResult CreateCategory([FromBody] CategoryDto categoryCreate)
         {
             if (categoryCreate == null)

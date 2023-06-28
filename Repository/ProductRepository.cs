@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using tparf.Data;
 using tparf.Interfaces;
 using tparf.Models;
@@ -14,38 +15,38 @@ namespace tparf.Repository
             _context = context;
             _mapper = mapper;
         }
-        public bool CreateProduct(Guid manufacturerId, Guid categoryId, Product product)
+        public bool CreateProduct(int manufacturerId, int subcategoryId, Product product)
         {
             _context.Add(product);
             return Save();
         }
 
-        public Product GetProduct(Guid productId)
+        public Product GetProduct(int productId)
         {
-            return _context.Products.Where(o => o.Id == productId).FirstOrDefault();
+            return _context.Products.Where(o => o.Id == productId).Include(x => x.Subcategory).Include(x => x.Manufacturer).FirstOrDefault();
         }
 
-        public ICollection<Product> GetProductByManufacturer(Guid manufacturerId)
+        public ICollection<Product> GetProductByManufacturer(int manufacturerId)
         {
             return _context.Products.Where(p => p.Manufacturer.Id == manufacturerId).ToList();
         }
 
-        public ICollection<Product> GetProductByCategory(Guid categoryId)
+        public ICollection<Product> GetProductByCategory(int subCategoryId)
         {
-            return _context.Products.Where(p => p.Category.Id == categoryId).ToList();
+            return _context.Products.Where(p => p.Subcategory.Id == subCategoryId).ToList();
         }
 
         public ICollection<Product> GetProducts()
         {
-            return _context.Products.ToList();
+            return _context.Products.Include(x =>x.Subcategory).ToList();
         }
 
-        public ICollection<User> GetUserByProduct(Guid productId)
-        {
-            throw new NotImplementedException();
-        }
+        //public ICollection<ApplicationUser> GetUserByProduct(int productId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public bool ProductExists(Guid productId)
+        public bool ProductExists(int productId)
         {
             return _context.Products.Any(o => o.Id == productId);
         }
@@ -56,7 +57,7 @@ namespace tparf.Repository
             return saved > 0 ? true : false;
         }
 
-        public ICollection<ProductProperty> GetProductPropertyByProduct(Guid productId)
+        public ICollection<ProductProperty> GetProductPropertyByProduct(int productId)
         {
             return _context.ProductProperties.Where(p => p.Product.Id == productId).ToList();
         }

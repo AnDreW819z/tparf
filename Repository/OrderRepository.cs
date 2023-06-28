@@ -15,13 +15,13 @@ namespace tparf.Repository
             _context = context;
             _mapper = mapper;
         }
-        public bool CreateOrder(Guid userId, Guid productId, Order order)
+        public bool CreateOrder(/*int userId,*/ int productId, Order order)
         {
             _context.Add(order);
             return Save();
         }
 
-        public Order GetOrder(Guid orderId)
+        public Order GetOrder(int orderId)
         {
             return _context.Orders.Where(o => o.Id == orderId).FirstOrDefault();
         }
@@ -31,17 +31,17 @@ namespace tparf.Repository
             return _context.Orders.ToList();
         }
 
-        public ICollection<Order> GetOrdersOfAProduct(Guid productId)
+        public ICollection<Order> GetOrdersOfAProduct(int productId)
         {
             return _context.Orders.Where(c => c.Product.Id == productId).ToList();
         }
 
-        public ICollection<Order> GetOrdersOfAUser(Guid userId)
-        {
-            return _context.Orders.Where(c => c.User.Id == userId).ToList();
-        }
+        //public ICollection<Order> GetOrdersOfAUser(int userId)
+        //{
+        //    return _context.Orders.Where(c => c.User.Id == userId).ToList();
+        //}
 
-        public bool OrderExists(Guid orderId)
+        public bool OrderExists(int orderId)
         {
             return _context.Orders.Any(c => c.Id == orderId);
         }

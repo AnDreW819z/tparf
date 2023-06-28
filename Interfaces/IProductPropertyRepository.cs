@@ -4,8 +4,8 @@ namespace tparf.Interfaces
 {
     public interface IProductPropertyRepository
     {
-        bool ProductPropertyExists(Guid productPropertyId);
-        bool CreateProductProperty(Guid productId,ProductProperty productProperty);
+        bool ProductPropertyExists(int productPropertyId);
+        bool CreateProductProperty(int productId,ProductProperty productProperty);
         bool Save();
     }
 }

@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
 using tparf.Dto;
+using tparf.Dto.AppUser.OtherObjects;
 using tparf.Interfaces;
 using tparf.Models;
 
 namespace tparf.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/manufacturer")]
     [ApiController]
     public class ManufacturerController : Controller
     {
@@ -33,7 +36,7 @@ namespace tparf.Controllers
         [HttpGet("{manufacturerId}")]
         [ProducesResponseType(200, Type = typeof(Manufacturer))]
         [ProducesResponseType(400)]
-        public IActionResult GetCategory(Guid manufacturerId)
+        public IActionResult GetCategory(int manufacturerId)
         {
             if (!_manufacturerRepository.ManufacturerExists(manufacturerId))
                 return NotFound();
@@ -47,7 +50,7 @@ namespace tparf.Controllers
         [HttpGet("/manufacturer/{productId}")]
         [ProducesResponseType(200, Type = typeof(Manufacturer))]
         [ProducesResponseType(400)]
-        public IActionResult GetManufacturerByProduct(Guid productId)
+        public IActionResult GetManufacturerByProduct(int productId)
         {
             var manufacturer = _mapper.Map<ManufacturerDto>(
                 _manufacturerRepository.GetManufacturerByProduct(productId));
@@ -60,7 +63,7 @@ namespace tparf.Controllers
         [HttpGet("{manufacturerId}/product")]
         [ProducesResponseType(200, Type = typeof(Product))]
         [ProducesResponseType(400)]
-        public IActionResult GetProductByManufacturer(Guid manufacturerId)
+        public IActionResult GetProductByManufacturer(int manufacturerId)
         {
             if (!_manufacturerRepository.ManufacturerExists(manufacturerId))
             {
@@ -75,6 +78,7 @@ namespace tparf.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
         public IActionResult CreateManufacturer([FromBody] ManufacturerDto manufacturerCreate)
         {
             if (manufacturerCreate == null)

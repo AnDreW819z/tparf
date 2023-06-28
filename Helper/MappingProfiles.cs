@@ -16,10 +16,12 @@ namespace tparf.Helper
             CreateMap<ProductDto, Product>();
             CreateMap<ProductProperty, ProductPropertyDto>();
             CreateMap<ProductPropertyDto, ProductProperty>();
-            CreateMap<User, UserDto>();
-            CreateMap<UserDto, User>();
+            //CreateMap<ApplicationUser, UserDto>();
+            //CreateMap<UserDto, ApplicationUser>();
             CreateMap<Order, OrderDto>();
             CreateMap<OrderDto, Order>();
+            CreateMap<Subcategory, SubcategoryDto>();
+            CreateMap<SubcategoryDto, Subcategory>();
         }
         
     }
