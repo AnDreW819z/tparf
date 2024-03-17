@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using tparf.api.Data;
 using tparf.api.Entities;
 using tparf.api.Interfaces;
@@ -9,10 +10,12 @@ namespace tparf.api.Repository
     public class OrderRepository : IOrderRepository
     {
         private readonly TparfDbContext _tparfDbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrderRepository(TparfDbContext tparfDbContext)
+        public OrderRepository(TparfDbContext tparfDbContext, UserManager<ApplicationUser> userManager)
         {
             _tparfDbContext = tparfDbContext;
+            _userManager = userManager;
         }
 
         public async Task<bool> CartExist(long cartId)
@@ -56,13 +59,15 @@ namespace tparf.api.Repository
         {
             if (await CartExist(orderDto.CartId))
             {
+                var userId = await _tparfDbContext.Carts.FindAsync(orderDto.CartId);
+                var user = await _userManager.FindByIdAsync(userId.UserId.ToString());
                 Order order = new Order
                 {
                     CartId = orderDto.CartId,
-                    Email = orderDto.Email,
-                    PhoneNumber = orderDto.PhoneNumber,
-                    FirstName = orderDto.FirstName,
-                    LastName = orderDto.LastName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     TotalPrice = orderDto.TotalPrice,
                     Adress = orderDto.Adress,
                     StatusId = 1,
@@ -136,6 +141,16 @@ namespace tparf.api.Repository
             if (statuses != null)
             {
                 return statuses;
+            }
+            return default;
+        }
+
+        public async Task<OrderStatus> GetStatusById(int id)
+        {
+            var status = await _tparfDbContext.OrderStatuses.FindAsync(id);
+            if (status != null)
+            {
+                return status;
             }
             return default;
         }

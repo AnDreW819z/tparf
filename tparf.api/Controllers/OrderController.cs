@@ -44,7 +44,7 @@ namespace tparf.api.Controllers
 
         [HttpGet]
         [Route("getOrders")]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
+        public async Task<ActionResult<List<OrderDto>>> GetOrders()
         {
             try
             {
