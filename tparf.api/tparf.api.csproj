@@ -26,8 +26,4 @@
     <ProjectReference Include="..\tparf.dto\tparf.dto.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Service\" />
-  </ItemGroup>
-
 </Project>

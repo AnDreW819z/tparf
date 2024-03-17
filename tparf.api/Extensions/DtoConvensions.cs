@@ -1,6 +1,8 @@
 ﻿using tparf.api.Entities;
+using tparf.dto.CartItems;
 using tparf.dto.Categories;
 using tparf.dto.Manufacturer;
+using tparf.dto.Orders;
 using tparf.dto.Product;
 using tparf.dto.Product.Characteristics;
 using tparf.dto.Product.Descriptions;
@@ -201,5 +203,96 @@ namespace tparf.api.Extensions
                 ProductId = description.ProductId,
             };
         }
+
+        //////////// Shopping Carts /////////////
+        ///
+        public static List<CartItemDto> ConvertToDto(this List<CartItem> cartItems,
+                                                           List<Product> products)
+        {
+            return (from cartItem in cartItems
+                    join product in products
+                    on cartItem.ProductId equals product.Id
+                    select new CartItemDto
+                    {
+                        Id = cartItem.Id,
+                        ProductId = cartItem.ProductId,
+                        ProductName = product.Name,
+                        ProductImageUrl = product.ImageUrl,
+                        Price = product.Price,
+                        CartId = cartItem.CartId,
+                        Qty = cartItem.Qty,
+                        TotalPrice = product.Price * cartItem.Qty
+                    }).ToList();
+        }
+
+        public static CartItemDto ConvertToDto(this CartItem cartItem,
+                                                    Product product)
+        {
+            return new CartItemDto
+            {
+                Id = cartItem.Id,
+                ProductId = cartItem.ProductId,
+                ProductName = product.Name,
+                ProductImageUrl = product.ImageUrl,
+                Price = product.Price,
+                CartId = cartItem.CartId,
+                Qty = cartItem.Qty,
+                TotalPrice = product.Price * cartItem.Qty
+            };
+        }
+
+        ////////////// Orders ////////////////
+        ///
+
+        public static List<OrderDto> ConvertToDto(this List<Order> orders)
+        {
+            return (from order in orders
+                    select new OrderDto
+                    {
+                        Id = order.Id,
+                        CartId = order.CartId,
+                        Email = order.Email,
+                        PhoneNumber = order.PhoneNumber,
+                        FirstName = order.FirstName,
+                        LastName = order.LastName,
+                        TotalPrice = order.TotalPrice,
+                        Adress = order.Adress,
+                        StatusId = order.StatusId,
+                    }).ToList();
+
+        }
+
+        public static OrderDto ConvertToDto(this Order order)
+        {
+            return new OrderDto
+            {
+                Id = order.Id,
+                CartId = order.CartId,
+                Email = order.Email,
+                PhoneNumber = order.PhoneNumber,
+                FirstName = order.FirstName,
+                LastName = order.LastName,
+                TotalPrice = order.TotalPrice,
+                Adress = order.Adress,
+                StatusId = order.StatusId,
+            };
+
+        }
+
+        public static List<OrderItemDto> ConvertToDto(this List<OrderItem> orderItems)
+        {
+            return (from orderItem in orderItems
+                    select new OrderItemDto
+                    {
+                        Id = orderItem.Id,
+                        OrderId = orderItem.OrderId,
+                        ProductId = orderItem.ProductId,
+                        ProductName = orderItem.ProductName,
+                        Qty = orderItem.Qty,
+                        Price = orderItem.Price,
+                        TotalPriceByOrderItem = orderItem.TotalPriceByOrderItem,
+                    }).ToList();
+        }
+
     }
 }

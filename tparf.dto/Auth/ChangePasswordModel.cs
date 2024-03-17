@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace tparf.dto.Auth
 {
-    internal class ChangePasswordModel
+    public class ChangePasswordModel
     {
         [Required]
         public string Email { get; set; }

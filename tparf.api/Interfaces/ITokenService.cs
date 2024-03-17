@@ -5,7 +5,7 @@ namespace tparf.api.Interfaces
 {
     public interface ITokenService
     {
-        TokenResponse GetToken(IEnumerable<Claim> claim);
+        TokenResponse GetToken(List<Claim> claim);
         string GetRefreshToken();
         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
