@@ -1,0 +1,144 @@
+﻿@page "/product/{Id:long}"
+@inherits ProductDetailsBase
+@inject NavigationManager navigationManager;
+
+@if(product == null && errorMessage == null)
+{
+    <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+}
+else if(errorMessage != null)
+{
+    <DisplayError ErrorMessage="@errorMessage"/>
+}
+else
+{
+    <MudGrid Class="mud-width-full justify-content-center" Style="flex-wrap">
+            <MudItem xs="12" md="12">
+                <MudPaper Elevation="3" Class="p-4">
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" md="8">
+            <MudPaper Elevation="0" Style="justify-content: center;">
+                @if (product.Images.Count != 0)
+                {
+                    <MudCarousel Class="mud-width-full" Style="min-height:250px; max;width:auto; " ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+                        
+                            
+                        
+                        @foreach (var image in images)
+                        {
+                            <MudCarouselItem Transition="Transition.Slide" Color="@Color.Dark">
+                                <div class="d-flex justify-center">
+                                    <MudImage Fluid="true" Style="padding:20px; height:100%" Src="@image.Value" Size="@Size.Large" />
+                                </div>
+                            </MudCarouselItem>
+                        }
+                    </MudCarousel>
+                }
+                else if (product.ImageUrl != null && product.ImageUrl != "string")
+                {
+                    <div class="d-flex justify-center">
+                        <MudImage Fluid="true" Src="@product.ImageUrl" Style=" max-width:400px; height:auto" Class="justify-center" />
+                    </div>
+
+                }
+                else
+                {
+                    <div class="d-flex justify-center">
+                        <MudImage Fluid="true" Src="https://elitas.ru/images/no-image-large.jpg" Style=" max-width:400px; height:auto" Class="justify-center" />
+                    </div>
+                }
+            </MudPaper>
+            </MudItem>
+            <MudItem xs="12" md="4" >
+            <MudPaper Elevation="1" Square="true" Class="p-4">
+                <div style="padding:20px">
+                    <MudText Typo="Typo.h6">@product.Name</MudText>
+                    @if(product.Price == 0 || product.Price == null)
+                    {
+                        <MudText Typo="Typo.h6">
+                            Цена: по запросу
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h6">Цена: ₽@String.Format("{0:0.00}", product.Price)</MudText>
+                    }
+                    
+                    <MudText Typo="Typo.body1"><strong>Артикул:</strong> @product.Article</MudText>
+                    @*<MudNavLink>
+                <MudText Typo="Typo.body1"><strong>Скидка:</strong> @product.Discount</MudText>
+                </MudNavLink>*@
+                    <AuthorizeView>
+                        <NotAuthorized>
+                            <MudButton StartIcon="@Icons.Material.Filled.ShoppingCart" Color="Color.Success" Class="mt-4" Href="/login">Добавить в корзину</MudButton>
+                        </NotAuthorized>
+                        <Authorized>
+                            <MudButton StartIcon="@Icons.Material.Filled.ShoppingCart" Color="Color.Success" Class="mt-4"
+                                   OnClick="async () => await AddToCart_Click(new CartItemToAddDto{
+                                   CartId = cartId,
+                                   ProductId = product.Id,
+                                   Qty = 1
+                               })">Добавить в корзину</MudButton>
+                        </Authorized>
+                    </AuthorizeView>
+                    
+                </div>
+                </MudPaper>
+            </MudItem>
+            @if (product.Descriptions != null)
+            {
+                <MudItem xs="12" md="6">
+                    <MudPaper Elevation="0">
+                        <MudText Typo="Typo.h6" Style="padding:40px" Align="Align.Left">Описание</MudText>
+                        @foreach(var description in product.Descriptions)
+                        {
+                        <MudText Align="Align.Left" Style="padding:20px">@description.Title</MudText>
+                        <MudText Align="Align.Left" Style="padding:20px">@description.Text</MudText>
+                }
+
+                    </MudPaper>
+
+                </MudItem>
+            }
+        
+            @if (product.Characteristics != null)
+            {
+                <MudItem xs="12" md="6">
+                    <MudPaper Elevation="0">
+                    <MudText Typo="Typo.h6" Style="padding:40px"  Align="Align.Left">Характеристики</MudText>
+                    </MudPaper>
+                    <div id="another_unique_identifier" class="ma-0" style="height:300px;overflow: auto;">
+                        <MudPaper Elevation="0">
+
+                        <MudDataGrid style="display: flex;flex-wrap: nowrap;" Items="@product.Characteristics">
+                                <Columns>
+                                <PropertyColumn Style="flex: 1;" Property="x=>x.Name" Title="Название" />
+                                <PropertyColumn Style="flex: 1;" Property="x=>x.Value" Title="Значение" />
+                                </Columns>
+                            </MudDataGrid>
+
+                            <MudScrollToTop TopOffset="200" Selector="#unique_id_scroll_section"
+                                    VisibleCssClass="visible absolute">
+                            </MudScrollToTop>
+                        </MudPaper>
+                        </div>
+                </MudItem>
+            }
+            <MudSpacer />
+            <MudSpacer />
+            <MudItem xs="12" md="12">
+            <MudPaper Class="justify-content-center" Elevation="0">
+                    <MudText Align="Align.Center" Typo="Typo.h4">Может быть интересно</MudText>
+                    <MudSpacer/>
+                    <div class="d-flex justify-center">
+                    <DisplayProducts products="@products.Take(4).ToList()"></DisplayProducts>
+                    </div>
+                </MudPaper>
+            </MudItem>
+        
+
+        
+    </MudGrid>
+
+}

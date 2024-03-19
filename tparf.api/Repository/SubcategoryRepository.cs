@@ -86,7 +86,11 @@ namespace tparf.api.Repository
                 subcategories.Add(await GetSubcategory(product.SubcategoryId));   
             }
             if (subcategories != null)
-                return subcategories;
+            {
+                var result = subcategories.GroupBy(s => s.Id).Select(s => s.FirstOrDefault()).ToList();
+                return result;
+            }
+                
             return default;
         }
 

@@ -1,0 +1,65 @@
+﻿@page "/registration"
+@using tparf.dto.Auth;
+@inject IAuthenticationService _authService;
+@inject NavigationManager _navMgr;
+
+<EditForm Model="@registerModel" OnValidSubmit="DoRegister">
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudPaper Elevation="0" Height="200">
+
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="7">
+            <MudCard >
+                <MudCardContent>
+                    <MudTextField Label="Имя" 
+                                  @bind-Value="registerModel.FirstName" For="@(() => registerModel.FirstName)" />
+                    <MudTextField Label="Фамилия"
+                                  @bind-Value="registerModel.LastName" For="@(() => registerModel.LastName)" />
+
+                    <MudTextField Label="Название компании"
+                                  @bind-Value="registerModel.CompanyName" For="@(() => registerModel.CompanyName)" />
+
+                    <MudTextField Label="Номер телефона"
+                                  @bind-Value="registerModel.PhoneNumber" For="@(() => registerModel.PhoneNumber)" />
+
+                    <MudTextField Label="Email" Class="mt-3"
+                                  @bind-Value="registerModel.Email" For="@(() => registerModel.Email)" />
+                    <MudTextField Label="Пароль" HelperText="Используйте сильный пароль" Class="mt-3"
+                                  @bind-Value="registerModel.Password" For="@(() => registerModel.Password)" InputType="InputType.Password" />
+                    <MudTextField Label="Пароль" HelperText="Повторите пароль" Class="mt-3"
+                                  @bind-Value="registerModel.PasswordConfirm" For="@(() => registerModel.PasswordConfirm)" InputType="InputType.Password" />
+                </MudCardContent>
+                <MudCheckBox T="bool" @bind-Checked="@Consent" Size="Size.Medium" Label="Даю свое согласие на обработку персональных данных" Color="Color.Secondary"></MudCheckBox>
+
+                <MudCardActions >
+                    <MudItem xs="5" Style="display: flex; justify-content: center;">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" Disabled="!Consent">Регистрация</MudButton>
+                    </MudItem>
+                    
+                    <MudItem xs="5" Style="display: flex; justify-content: center;">
+                        <MudButton ButtonType="ButtonType.Submit" Href="/login" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Войти</MudButton>
+                    </MudItem>
+                    
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    
+    </MudGrid>
+</EditForm>
+@code {
+    RegistrationModel registerModel = new();
+    public bool Consent { get; set; } = false;
+    LoginResponse registerResponse = new();
+    async Task DoRegister()
+    {
+        registerResponse = await _authService.Registration(registerModel);
+        if (registerResponse.Token!= null && registerResponse.Token != "")
+        {
+            _navMgr.NavigateTo("/");
+        }
+
+    }
+
+}

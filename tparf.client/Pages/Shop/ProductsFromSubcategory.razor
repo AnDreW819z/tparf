@@ -1,0 +1,19 @@
+﻿@page "/subcategory/{subId:long}"
+@inherits ProductsFromSubcategoryBase
+
+@if(products == null && errorMessage == null)
+{
+    <DisplaySpinner/>
+}
+else if(errorMessage != null){
+    <DisplayError ErrorMessage = "@errorMessage" />
+}
+else{
+    <MudText Typo="Typo.h4" Align="Align.Center">@subcategoryName</MudText>
+    if(products.Count() > 0)
+    {
+            <DisplayProducts products="@products"></DisplayProducts>
+
+           
+    }
+}

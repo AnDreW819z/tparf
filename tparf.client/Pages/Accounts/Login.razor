@@ -1,0 +1,52 @@
+﻿@page "/login"
+@using tparf.dto.Auth;
+@inject IAuthenticationService _authService;
+@inject NavigationManager _navMgr;
+
+<EditForm Model="@loginModel" OnValidSubmit="DoLogin">
+    <DataAnnotationsValidator />
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudPaper Elevation="0" Height="200">
+
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="8" md="8" Class="align-content-center">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Email" Class="mt-3"
+                                  @bind-Value="loginModel.Email" Placeholder="Email" />
+                    <MudTextField Label="Пароль"  Class="mt-3"
+                                  @bind-Value="loginModel.Password" Placeholder="Пароль" InputType="InputType.Password" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudItem xs="6" sm="6" md="6" Style="display: flex; justify-content: center;">
+                        <div>
+                            <MudButton ButtonType="ButtonType.Submit" Class="justify-center" Variant="Variant.Filled" Color="Color.Primary">Войти</MudButton>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="6" sm="6" md="6" Style="display: flex; justify-content: center;">
+                        <div>
+                            <MudButton ButtonType="ButtonType.Submit" Class="justify-center" Href="/registration" Variant="Variant.Filled" Color="Color.Secondary">Регистрация</MudButton>
+                        </div>
+                    </MudItem>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+
+@code {
+    LoginModel loginModel = new();
+    LoginResponse loginResponse = new();
+    async Task DoLogin()
+    {
+        loginResponse.Email = "Wait...";
+        loginResponse = await _authService.Login(loginModel);
+        if (loginResponse.StatusCode == 200 && loginResponse.Token != "")
+        {
+            _navMgr.NavigateTo("/");
+        }
+    }
+}

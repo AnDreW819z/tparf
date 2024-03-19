@@ -1,0 +1,70 @@
+﻿@page "/cart"
+@inherits ShoppingCartBase
+
+@if (ShoppingCartItems == null && ErrorMessage == null)
+{
+    <DisplaySpinner></DisplaySpinner>
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+    <h3 class="mb-5">Корзина</h3>
+    @if (ShoppingCartItems.Count() > 0)
+    {
+        <MudGrid>
+            @foreach (var item in ShoppingCartItems)
+            {
+                <MudItem xs="12" md="12">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudGrid>
+                                <MudItem xs="12" md="5">
+                                    <MudImage Src="@item.ProductImageUrl" Fluid="true" Width="300" Class="img-thumbnail"/>
+                                </MudItem>
+                                <MudItem xs="12" md="7">
+                                    <h5>@item.ProductName</h5>
+                                    <span>
+                                        Цена: <b>@item.Price.ToString("C")</b>
+                                        <MudNumericField @bind-Value="@item.Qty" />
+                                        <MudButton Class="btn btn-info btn-sm update-qty"  OnClick="async () => await UpdateQtyCartItem_Click(item.Id, item.Qty)" itemid="@item.Id">Заказать</MudButton>
+                                    </span>
+                                    <div>
+                                        <MudButton Class="btn btn-danger sm" Color="@Color.Warning" OnClick="async () => await DeleteCartItem_Click(item.Id)">Удалить</MudButton>
+                                    </div>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+            
+        </MudGrid>
+        <MudGrid>
+            <MudItem xs="12" md="4">
+                <MudCard>
+                    <MudCardContent>
+                        <h5>Итог:</h5>
+                        <div class="mt-2">
+                            <div>Всего - (@TotalQuantity единиц)&nbsp;<b>@TotalPrice</b></div>
+                            @*<MudButton Class="btn btn-success" Link="@("Checkout")">
+                                <span class="oi oi-credit-card"></span>&nbsp; Перейти к заказу
+                            </MudButton>*@
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+        
+    }
+    else
+    {
+        <h4>В данный момент в вашей корзине покупок нет товаров</h4>
+    }
+}
+
+@code {
+
+}

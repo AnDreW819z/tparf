@@ -1,0 +1,61 @@
+﻿@page "/"
+@inherits GeneralBase
+
+@if (categories == null && errorMessage == null)
+{
+        <DisplaySpinner/>
+}
+else if (errorMessage != null)
+{
+        <DisplayError ErrorMessage = "@errorMessage" />
+}
+else
+{
+    <MudGrid Class="d-flex flex-wrap">
+        <MudItem xs="12">
+            <MudText Typo="Typo.h4" Align="Align.Center">Продукция</MudText>
+        </MudItem>
+        @foreach (var category in categories)
+        {
+            int subcategoryCount = 0;
+            string link = "/category/" + category.Id;
+            <MudItem md="4" sm="6" lg="3" xl="3" xxl="3">
+                <div>
+                    <MudCard Style="width:250px;" Square="true">
+                        <MudNavLink Href="@link" Class="justify-center">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Align=@Align.Center Color="Color.Dark" Typo="Typo.body1">@category.Name</MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <div class="justify-center">
+                                @if(category.ImageUrl == null || category.ImageUrl == "string")
+                                {
+                                    <MudCardMedia Image="https://elitas.ru/images/no-image-large.jpg" Height="200" Style="width:180;" />
+                                }
+                                else
+                                {
+                                    <MudCardMedia Image="@category.ImageUrl" Height="200" Style="width:180;" />
+                                }
+                            </div>
+
+                            <MudCardContent>
+
+                                @foreach (var subcategory in subcategories)
+                                {
+                                    @if (subcategory.CategoryId == category.Id)
+                                    {
+                                        subcategoryCount++;
+                                    }
+                                }
+                                <MudText Align=@Align.Center Color="Color.Dark" Typo="Typo.body1">@subcategoryCount подкатегорий</MudText>
+                            </MudCardContent>
+                        </MudNavLink>
+                    </MudCard>
+                </div>
+            </MudItem>
+
+
+        }
+    </MudGrid>
+}

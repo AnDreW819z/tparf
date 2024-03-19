@@ -1,0 +1,59 @@
+﻿@page "/category/{catId:long}"
+@inherits CategoryPageBase
+
+@if (subcategories == null && errorMessage == null)
+{
+    <DisplaySpinner />
+}
+else if (errorMessage != null)
+{
+    <DisplayError ErrorMessage="@errorMessage" />
+}
+else
+{
+    <MudGrid Class="d-flex flex-wrap">
+        @foreach (var subcategory in subcategories)
+        {
+            int productCount = 0;
+            string link = "/subcategory/" + subcategory.Id;
+            <MudItem md="4" sm="6" lg="3" xl="3" xxl="3">
+                <div>
+                    <MudCard Style="width:250px;" Square="true">
+                        <MudNavLink Href="@link" Class="justify-center">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Align=@Align.Center Color="Color.Dark" Typo="Typo.body1">@subcategory.Name</MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <div class="justify-center">
+                                @if(subcategory.ImageUrl == null || subcategory.ImageUrl == "string")
+                                {
+                                    <MudCardMedia Image="https://elitas.ru/images/no-image-large.jpg" Height="200" Style="width:180;" />
+                                }
+                                else
+                                {
+                                    <MudCardMedia Image="@subcategory.ImageUrl" Height="200" Style="width:180;" />
+                                }
+                            </div>
+
+                            <MudCardContent>
+
+                                @foreach (var product in products)
+                                {
+                                    @if (product.SubcategoryId == subcategory.Id)
+                                    {
+                                        productCount++;
+                                    }
+                                }
+                                <MudText Align=@Align.Center Color="Color.Dark" Typo="Typo.body1">@productCount товаров</MudText>
+                            </MudCardContent>
+                        </MudNavLink>
+                    </MudCard>
+                </div>
+            </MudItem>
+
+
+        }
+    </MudGrid>
+}
+

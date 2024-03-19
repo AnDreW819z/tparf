@@ -9,7 +9,6 @@ namespace tparf.api.Interfaces
         Task<List<Category>> GetCategories();
         Task<Category> GetCategory(long id);
         Task<List<Subcategory>> GetSubcategoryFromCategory(long catid);
-        //Task<IEnumerable<Subcategory>> GetSubcategoryFromManufacturer(long id);
         //Task<IEnumerable<TpaProduct>> GetProductFromCategory(long id);
 
         public Task<Category> AddNewCategory(CategoryDto createCatDto);

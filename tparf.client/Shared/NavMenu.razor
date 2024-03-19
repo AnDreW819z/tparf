@@ -1,0 +1,74 @@
+﻿﻿<MudDrawer @bind-Open="SideBarOpen"   PreserveOpenState="false" OpenMiniOnHover="true" Breakpoint="@Breakpoint.Lg" Elevation="1">
+	<MudDrawerHeader>
+		<MudImage Src="Logo.png"  Fluid="true"/>
+		@*<MudText Typo="Typo.h5" Color="Color.Primary" Style="margin-top:10px; margin-left:15px;">Code-Maze</MudText>*@
+	</MudDrawerHeader>
+	<MudNavMenu Color="Color.Info" Bordered="true">
+		<MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Главная</MudNavLink>
+		<MudNavLink Href="https://www.mttn-nsk.ru/" Target="_blank" Class="mud-nav-link-root" Icon="@Icons.Material.Filled.ElectricBolt" Match="NavLinkMatch.All">Группа Меттатрон</MudNavLink>
+		
+		@if(categoryDtos == null && errorMessage == null)
+		{
+			<DisplaySpinner/>
+		}
+		else if(errorMessage != null)
+		{
+			<DisplayError ErrorMessage=@errorMessage/>
+		}
+		else
+		{
+
+			<MudText Align="Align.Center">Категории</MudText>
+			@foreach (var categoryDto in categoryDtos)
+			{
+				var icon = categoryDto.IconCss;
+				<MudNavGroup Title=@categoryDto.Name Icon="@Icons.Material.Filled.Category" Expanded="false">
+					@foreach (var subcategoryDto in subcategoryDtos)
+					{
+						if (subcategoryDto.CategoryId == categoryDto.Id)
+						{
+							string link = "/subcategory/" + subcategoryDto.Id;
+							<MudNavLink Href="@link" Icon="@Icons.Material.Filled.Casino">@subcategoryDto.Name</MudNavLink>
+						}
+
+					}
+
+				</MudNavGroup>
+				
+			}
+			<MudText Align="Align.Center">Производители</MudText>
+
+			@foreach (var manufacturerDto in manufacturerDtos)
+			{
+				var icon = manufacturerDto.IconCss;
+				string link = $"/manufacturer/{manufacturerDto.Id}";
+				<MudNavLink Href="@link" Icon="@Icons.Material.Filled.PrecisionManufacturing">@manufacturerDto.Name</MudNavLink>
+
+			}
+			
+		}
+		
+		
+	</MudNavMenu>
+</MudDrawer>
+
+@code {
+		[Parameter]
+		public bool SideBarOpen { get; set; }
+
+	//private DrawerVariant _variant = DrawerVariant.Mini;
+
+	public static string GetIconValue(object SourceField, string IconName)
+	{
+		return SourceField.GetType().GetProperty(IconName).GetValue(SourceField, null).ToString();
+	}
+
+	private void ScreenResized(bool hidden)
+	{
+		//if (hidden)
+		//	_variant = DrawerVariant.Temporary;
+		//else
+		//	_variant = DrawerVariant.Mini;
+		//StateHasChanged();
+	}
+}

@@ -1,0 +1,32 @@
+﻿@inherits LayoutComponentBase﻿
+<MudAppBar Elevation="3" Style=" background-color:#0D47A1">
+	<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+				   OnClick="async () => await OnSidebarToggled.InvokeAsync()" />
+	<MudSpacer />
+	<MudText Style="color:#FFD600">ТОРГОВО-ПРОМЫШЛЕННОЕ АГЕНТСТВО</MudText>
+	<MudSpacer />
+	<AuthorizeView>
+		<NotAuthorized>
+			<MudLink Href="/login" Underline="Underline.None" Color="Color.Inherit">Войти</MudLink>
+		</NotAuthorized>
+	</AuthorizeView>
+		
+	
+	<AuthorizeView>
+		<Authorized>
+
+			
+
+			<MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Inherit" Href="/cart" />
+
+			<MudLink Underline="Underline.None" Color="Color.Inherit" Href="/logout">
+				<MudText Color="Color.Inherit">Выйти</MudText>
+			</MudLink>
+			@*<MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Edge="Edge.Start"
+						   OnClick="async () => await OnEndBarToggled.InvokeAsync()" />*@
+		</Authorized>
+		
+	</AuthorizeView>
+	
+
+</MudAppBar>

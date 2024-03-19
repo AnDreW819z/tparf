@@ -1,0 +1,7 @@
+﻿.mud-paper-custom {
+    min-height: 200px; /* Выберите подходящую высоту, которая будет соответствовать вашим требованиям */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;  /*Добавьте отступы по внутреннему краю, если необходимо*/ 
+}

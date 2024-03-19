@@ -1,0 +1,53 @@
+﻿@inherits DisplayProductsBase
+<MudGrid Class="d-flex flex-wrap " >
+    @foreach (var product in products)
+    {
+        string link = "/product/" + @product.Id;
+        string manufacturerLink = "/manufacturer/" + product.ManufacturerId;
+        <MudItem md="4" sm="6" lg="3" xl="3" xxl="3" Class=" justify-center">
+                <MudCard Style="width:250px;" Square="true">
+                <MudNavLink Href="@link">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Align=@Align.Center Color="Color.Dark" Typo="Typo.body1">@product.Name</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    @if(product.ImageUrl == null || product.ImageUrl == "string")
+                    {
+                       <MudCardMedia Image="https://elitas.ru/images/no-image-large.jpg" Height="200" Style="width:250; padding:20; padding-right:20" />  
+                    }
+                    else{
+                        <MudCardMedia Image="@product.ImageUrl" Height="200" Style="width:250; padding:20; padding-right:20" />
+                    }
+                    <MudCardContent>
+                        @if(product.Price == 0 || product.Price == null)
+                        {
+                            <MudText Align=@Align.Center Color="Color.Dark" Typo="Typo.body1" Class="justify-content-center">по запросу</MudText>
+                        }
+                        else
+                        {
+                            <MudText Align=@Align.Center Color="Color.Dark" Typo="Typo.body1" Class="justify-content-center">@product.Price.ToString("C")</MudText>
+                        }
+                        
+                    </MudCardContent>
+                    @*<MudPaper>
+                <MudCardContent>
+                <div class="card-content">
+                @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
+                {
+                <MudImage Src="@product.ImageUrl" Alt="Product Image" Class="product-img" />
+                }
+                <h3>@product.Name</h3>
+                <p>@product.Price.ToString("C")</p>
+                </div>
+                </MudCardContent>
+                </MudPaper>*@
+                </MudNavLink>
+                <MudCardContent>
+                    
+                    <MudNavLink Href="@manufacturerLink" Class="text-center">@product.ManufacturerName</MudNavLink>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>

@@ -91,7 +91,7 @@ namespace tparf.api.Controllers
         }
 
         [HttpGet]
-        [Route("getProductsFromSubcategoryWithManufacturer/{subId:long} {manId:long}")]
+        [Route("{subId:long}/getProductsFromSubcategoryWithManufacturer/{manId:long}")]
         public async Task<ActionResult<List<ProductDto>>> GetProductsFromSubcategoryWithManufacturer(long subId, long manId)
         {
             try

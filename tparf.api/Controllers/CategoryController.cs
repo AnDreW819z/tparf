@@ -116,24 +116,21 @@ namespace tparf.api.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("{catid}/getSubcategories")]
-        //public async Task<ActionResult<List<SubcategoryDto>>> GetSubcategoriesFromCategory(long catid)
-        //{
-        //    try
-        //    {
-        //        var subcategories = await _categoryRepository.GetSubcategoryFromCategory(catid);
-        //        var subcategoriesDto = subcategories.ConvertToDto();
-        //        return Ok(subcategoriesDto);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError,
-        //            "Ошибка получения данных из базы данных");
-        //    }
-        //}
-
-
-
+        [HttpGet]
+        [Route("{catid}/getSubcategories")]
+        public async Task<ActionResult<List<SubcategoryDto>>> GetSubcategoriesFromCategory(long catid)
+        {
+            try
+            {
+                var subcategories = await _categoryRepository.GetSubcategoryFromCategory(catid);
+                var subcategoriesDto = subcategories.ConvertToDto();
+                return Ok(subcategoriesDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ошибка получения данных из базы данных");
+            }
+        }
     }
 }

@@ -1,0 +1,22 @@
+﻿@page "/manufacturer/{manId:long}/subcategory/{subId:long}"
+@inherits DisplayProductsFromSubAndManBase
+
+@if (products == null && errorMessage == null)
+{
+    <DisplaySpinner />
+}
+else if (errorMessage != null)
+{
+    <DisplayError ErrorMessage="@errorMessage" />
+}
+else
+{
+    <MudItem xs="12">
+        <MudText Typo="Typo.h4" Align="Align.Center">@products.First().SubcategoryName</MudText>
+    </MudItem>
+    
+    if (products.Count() > 0)
+    {
+        <DisplayProducts products="@products"></DisplayProducts>
+    }
+}
