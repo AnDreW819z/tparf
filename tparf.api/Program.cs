@@ -81,7 +81,6 @@ builder.Services.AddSingleton(emailConfig);
 // Inject app Dependencies (Dependency Injection)
 builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
@@ -121,11 +120,10 @@ builder.Services.AddSwaggerGen(option =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseCors("cors");
 

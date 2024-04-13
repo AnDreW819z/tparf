@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "tparf.dto": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:60107;http://localhost:60108"
+    }
+  }
+}

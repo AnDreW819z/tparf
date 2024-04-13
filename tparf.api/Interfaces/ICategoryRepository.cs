@@ -8,10 +8,10 @@ namespace tparf.api.Interfaces
     {
         Task<List<Category>> GetCategories();
         Task<Category> GetCategory(long id);
-        Task<List<Subcategory>> GetSubcategoryFromCategory(long catid);
-        //Task<IEnumerable<TpaProduct>> GetProductFromCategory(long id);
-
-        public Task<Category> AddNewCategory(CategoryDto createCatDto);
+        Task<List<Product>> GetProductFromCategory(long catid);
+        Task<List<Category>> GetCategoriesFromManufacturer(long id);
+        Task<List<Product>> GetProductFromCategoryWithManufacturer(long subId, long manId);
+        public Task<Category> AddNewCategory(CreateCategoryDto createCatDto);
         public Task<Category> UpdateCategory(long id, UpdateCategoryDto updateCatDto);
         public Task<Status> DeleteCategory(long id);
     }

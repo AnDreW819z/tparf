@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace tparf.dto.Categories
 {
-    public class CategoryDto
+    public class CreateCategoryDto
     {
-        public long Id { get; set; }
+        public long Id {get; set;}
         public string Name { get; set; }
         public string IconCss { get; set; }
         public string ImageUrl { get; set; }
         public long? ParentId { get; set; }
-        public List<CategoryDto>? Children { get; set; }
     }
 }

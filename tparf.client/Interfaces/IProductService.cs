@@ -10,6 +10,7 @@ namespace tparf.client.Interfaces
     public interface IProductService
     {
         public Task<ProductDtos> GetProduct(long id);
+        public Task<CategoryDto> GetCategory(long id);
         public Task<List<ProductDto>> GetProducts();
         public Task<List<ProductDto>> GetProductsFromSubcategory(long subId);
         public Task<List<ProductDto>> GetProductsFromSubcategoryWithManufacturer(long subId, long manId);

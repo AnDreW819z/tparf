@@ -1,0 +1,29 @@
+[33mcommit cfd24afbb791ad1885af3f0a6b35002ad1b5d42a[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: andrey_moseev <[wer_ander@mail.ru]>
+Date:   Tue Mar 19 04:17:53 2024 +0300
+
+    На сегодня хватит программирования
+
+[33mcommit 47ae9867028fcefac546eed481bb8066c080ca4b[m
+Author: andrey_moseev <[wer_ander@mail.ru]>
+Date:   Sun Mar 17 14:41:16 2024 +0300
+
+    ФиналОчка
+
+[33mcommit 0383d9c688407ea821018334fa7c1979be0e9cf4[m
+Author: andrey_moseev <[wer_ander@mail.ru]>
+Date:   Sun Mar 17 13:35:58 2024 +0300
+
+    Финальные Корректировки в API
+
+[33mcommit e69e95a9d23ee33a7831f98aceee61075b704a3f[m
+Author: andrey_moseev <[wer_ander@mail.ru]>
+Date:   Sun Mar 17 10:45:38 2024 +0300
+
+    Добавьте файлы проекта.
+
+[33mcommit 6cade1c5e74139d9316797bfad638403f5fe5f4a[m
+Author: andrey_moseev <[wer_ander@mail.ru]>
+Date:   Sun Mar 17 10:45:36 2024 +0300
+
+    Добавить .gitattributes и .gitignore.

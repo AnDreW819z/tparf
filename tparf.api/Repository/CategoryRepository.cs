@@ -16,21 +16,26 @@ namespace tparf.api.Repository
             _tparfDbContext = tparfDbContext;
         }
 
-        private async Task<bool> CategoryExist(long catId)
+        private async Task<bool> CategoryExist(long? catId)
         {
             return await _tparfDbContext.Categories.AnyAsync(c => c.Id == catId);
         }
 
-        public async Task<Category> AddNewCategory(CategoryDto createCatDto)
+        public async Task<Category> AddNewCategory(CreateCategoryDto createCatDto)
         {
             if (await CategoryExist(createCatDto.Id) == false)
             {
+                if (createCatDto.ParentId != 0 && await CategoryExist(createCatDto.ParentId) == false)
+                    return null;
                 Category category = new Category
                 {
                     Name = createCatDto.Name,
                     IconCss = createCatDto.IconCss,
-                    ImageUrl = createCatDto.ImageUrl
+                    ImageUrl = createCatDto.ImageUrl,
+                    ParentId = createCatDto.ParentId,
                 };
+                if (createCatDto.ParentId == 0)
+                    category.ParentId = null;
                 if (category != null)
                 {
                     var result = await _tparfDbContext.Categories.AddAsync(category);
@@ -57,7 +62,14 @@ namespace tparf.api.Repository
         {
 
             var categories = await _tparfDbContext.Categories.ToListAsync();
-            return categories;
+            var categoriesParent = categories.Where(c=>c.ParentId == null).ToList();
+            List<Category> result = new List<Category>();
+            foreach (var category in categoriesParent)
+            {
+                var response = await GetCategory(category.Id);
+                result.Add(response);
+            }
+            return result;
         }
 
         public async Task<Category> GetCategory(long id)
@@ -65,21 +77,39 @@ namespace tparf.api.Repository
             if (await CategoryExist(id))
             {
                 var category = await _tparfDbContext.Categories.FindAsync(id);
+                category.Children = await _tparfDbContext.Categories.Where(c=> c.ParentId == category.Id).ToListAsync();
                 return category;
             }
             return null;
         }
 
-        //public async Task<IEnumerable<TpaProduct>> GetProductFromCategory(long id)
-        //{
-        //    var products = await _tparfDbContext.TpaProducts.Include(p=>p.Category).Where(p=>p.CategoryId== id).ToListAsync();
-        //    return products;
-        //}
-
-        public async Task<List<Subcategory>> GetSubcategoryFromCategory(long catid)
+        public async Task<List<Product>> GetProductFromCategory(long id)
         {
-            var subcategory = await _tparfDbContext.Subcategories.Include(s => s.Category).Where(s => s.CategoryId == catid).ToListAsync();
-            return subcategory;
+            var products = await _tparfDbContext.Products.Include(p => p.Category).Include(p => p.Manufacturer).Where(p => p.CategoryId == id).ToListAsync();
+            return products;
+        }
+
+        public async Task<List<Category>> GetCategoriesFromManufacturer(long id)
+        {
+            var products = await _tparfDbContext.Products.Where(c => c.ManufacturerId == id).Include(s => s.Manufacturer).ToListAsync();
+            List<Category> subcategories = new List<Category>();
+            foreach (var product in products)
+            {
+                subcategories.Add(await GetCategory(product.CategoryId));
+            }
+            if (subcategories != null)
+            {
+                var result = subcategories.GroupBy(s => s.Id).Select(s => s.FirstOrDefault()).ToList();
+                return result;
+            }
+
+            return default;
+        }
+
+        public async Task<List<Product>> GetProductFromCategoryWithManufacturer(long subId, long manId)
+        {
+            var products = await _tparfDbContext.Products.Include(p => p.Category).Include(p => p.Manufacturer).Where(p => p.CategoryId == subId && p.ManufacturerId == manId).ToListAsync();
+            return products;
         }
 
         public async Task<Category> UpdateCategory(long id, UpdateCategoryDto updateCatDto)

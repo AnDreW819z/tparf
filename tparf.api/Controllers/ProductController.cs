@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using tparf.api.Entities;
 using tparf.api.Extensions;
 using tparf.api.Interfaces;
 using tparf.dto.Auth;
@@ -93,6 +94,31 @@ namespace tparf.api.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("addNewProducts")]
+        public async Task<IActionResult> AddNewProducts([FromBody] List<CreateProductDto> productDtos)
+        {
+            try
+            {
+                foreach(var productDto in productDtos)
+                {
+                    var newProduct = await _productRepository.AddNewProduct(productDto);
+
+                    if (newProduct == null)
+                    {
+                        return NoContent();
+                    }
+                   
+                }
+                return Ok(productDtos);
+
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ошибка создания");
+            }
+        }
+
         [HttpPut]
         [Route("updateProduct/{id:long}")]
         public async Task<IActionResult> UpdateProduct(long id, UpdateProductDto productDto)
@@ -108,6 +134,39 @@ namespace tparf.api.Controllers
                 var responce = await _productRepository.GetProduct(product.Id);
                 var result = responce.ConvertToDto();
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("updateProducts")]
+        public async Task<IActionResult> UpdateProducts(List<CreateProductDto> productsDtos)
+        {
+            try
+            {
+                foreach (var productDto in productsDtos)
+                {
+                    UpdateProductDto uproductdto = new UpdateProductDto();
+                    uproductdto.Name= productDto.Name;
+                    uproductdto.Article = productDto.Article;
+                    uproductdto.ImageUrl = productDto.ImageUrl;
+                    uproductdto.ManufacturerId = productDto.ManufacturerId;
+                    uproductdto.СategoryId = productDto.СategoryId;
+                    uproductdto.Price = productDto.Price;
+                    uproductdto.Discount = productDto.Discount;
+
+                    var product = await _productRepository.UpdateProduct(productDto.Id, uproductdto);
+                    if (product == null)
+                    {
+                        return NotFound();
+                    }
+                }
+                
+
+                return Ok("Выполнено");
             }
             catch (Exception ex)
             {
@@ -161,6 +220,30 @@ namespace tparf.api.Controllers
                     return NoContent();
                 }
                 return Ok(newCharacteristic);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ошибка создания");
+            }
+        }
+
+        [HttpPost]
+        [Route("characteristics/addNewCharacteristics")]
+        public async Task<IActionResult> AddNewCharacteristicss([FromBody] List<CharacteristicDto> characteristics)
+        {
+            try
+            {
+                foreach(var characteristic in characteristics)
+                {
+                    var newCharacteristic = await _productRepository.AddNewCharacteristic(characteristic);
+                    if (newCharacteristic == null)
+                    {
+                        return NoContent();
+                    }
+                    
+                }
+                return Ok("Характеристики успешно загружены");
             }
             catch (Exception ex)
             {

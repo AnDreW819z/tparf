@@ -44,6 +44,33 @@ namespace tparf.client.Services
             }
         }
 
+        public async Task<CategoryDto> GetCategory(long id)
+        {
+            try
+            {
+                var responce = await _httpClient.GetAsync($"api/Category/getCategory/{id}");
+                if (responce.IsSuccessStatusCode)
+                {
+                    if (responce.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        return default(CategoryDto);
+                    }
+                    return await responce.Content.ReadFromJsonAsync<CategoryDto>();
+                }
+
+                else
+                {
+                    var message = await responce.Content.ReadAsStringAsync();
+                    throw new Exception(message);
+                }
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<List<CharacteristicDto>> GetCharacteristicById(long id)
         {
             try

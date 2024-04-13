@@ -3,6 +3,7 @@ using tparf.api.Extensions;
 using tparf.api.Interfaces;
 using tparf.dto.Auth;
 using tparf.dto.Categories;
+using tparf.dto.Product;
 using tparf.dto.Subcategories;
 
 namespace tparf.api.Controllers
@@ -64,8 +65,57 @@ namespace tparf.api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("getProductsFromCategory/{id:long}")]
+        public async Task<ActionResult<SubcategoryDto>> GetProductsFromCategory(long id)
+        {
+            try
+            {
+                var products = await _categoryRepository.GetProductFromCategory(id);
+                if (products == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    var productsDto = products.ConvertToDto();
+                    return Ok(productsDto);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ошибка получения данных из базы данных");
+            }
+        }
+
+        [HttpGet]
+        [Route("{catId:long}/getProductsFromCategoryWithManufacturer/{manId:long}")]
+        public async Task<ActionResult<List<ProductDto>>> GetProductsFromCategoryWithManufacturer(long catId, long manId)
+        {
+            try
+            {
+
+                var products = await _categoryRepository.GetProductFromCategoryWithManufacturer(catId, manId);
+                if (products == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    var productDto = products.ConvertToDto();
+                    return Ok(productDto);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ошибка получения данных из базы данных");
+            }
+        }
+
         [HttpPost]
-        public async Task<IActionResult> AddNewCategory([FromBody] CategoryDto categoryDto)
+        public async Task<IActionResult> AddNewCategory([FromBody] CreateCategoryDto categoryDto)
         {
             try
             {
@@ -113,23 +163,6 @@ namespace tparf.api.Controllers
             catch (Exception ex)
             {
                 return new Status { Message = ex.Message, StatusCode = 500 };
-            }
-        }
-
-        [HttpGet]
-        [Route("{catid}/getSubcategories")]
-        public async Task<ActionResult<List<SubcategoryDto>>> GetSubcategoriesFromCategory(long catid)
-        {
-            try
-            {
-                var subcategories = await _categoryRepository.GetSubcategoryFromCategory(catid);
-                var subcategoriesDto = subcategories.ConvertToDto();
-                return Ok(subcategoriesDto);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Ошибка получения данных из базы данных");
             }
         }
     }

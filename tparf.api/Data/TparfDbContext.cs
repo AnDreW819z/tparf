@@ -21,7 +21,6 @@ namespace tparf.api.Data
         public DbSet<ProductDescription> Descriptions { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Subcategory> Subcategories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<TokenInfo> TokenInfo { get; set; }
         public DbSet<Characteristic> Characteristics { get; set; }
@@ -29,5 +28,6 @@ namespace tparf.api.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Сurrency> Сurrencies { get; set; }
     }
 }

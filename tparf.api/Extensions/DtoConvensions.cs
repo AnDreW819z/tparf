@@ -25,6 +25,8 @@ namespace tparf.api.Extensions
                             Name = category.Name,
                             IconCss = category.IconCss,
                             ImageUrl = category.ImageUrl,
+                            ParentId = category.ParentId,
+                            Children = ConvertToDto(category.Children)
                         }).ToList();
             }
             return null;
@@ -37,34 +39,9 @@ namespace tparf.api.Extensions
                 Id = category.Id,
                 Name = category.Name,
                 IconCss = category.IconCss,
-                ImageUrl = category.ImageUrl
-            };
-        }
-        ////////////////////    Subcategory   ///////////////////////////
-        public static List<SubcategoryDto> ConvertToDto(this List<Subcategory> subcategories)
-        {
-            return (from subcategory in subcategories
-                    select new SubcategoryDto
-                    {
-                        Id = subcategory.Id,
-                        Name = subcategory.Name,
-                        IconCss = subcategory.IconCss,
-                        ImageUrl = subcategory.ImageUrl,
-                        CategoryId = subcategory.Category.Id,
-                        CategoryName = subcategory.Category.Name,
-                    }).ToList();
-        }
-
-        public static SubcategoryDto ConverToDto(this Subcategory subcategory)
-        {
-            return new SubcategoryDto
-            {
-                Id = subcategory.Id,
-                Name = subcategory.Name,
-                IconCss = subcategory.IconCss,
-                ImageUrl = subcategory.ImageUrl,
-                CategoryId = subcategory.Category.Id,
-                CategoryName = subcategory.Category.Name
+                ImageUrl = category.ImageUrl,
+                ParentId = category.ParentId,
+                Children = ConvertToDto(category.Children)
             };
         }
 
@@ -107,8 +84,8 @@ namespace tparf.api.Extensions
                         Discount = product.Discount,
                         ManufacturerId= product.Manufacturer.Id,
                         ManufacturerName = product.Manufacturer.Name,
-                        SubcategoryId = product.Subcategory.Id,
-                        SubcategoryName = product.Subcategory.Name
+                        CategoryId = product.Category.Id,
+                        CategoryName = product.Category.Name
                     }).ToList();
         }
 
@@ -124,8 +101,8 @@ namespace tparf.api.Extensions
                 Discount = product.Discount,
                 ManufacturerId = product.Manufacturer.Id,
                 ManufacturerName = product.Manufacturer.Name,
-                SubcategoryId = product.Subcategory.Id,
-                SubcategoryName = product.Subcategory.Name,
+                CategoryId = product.Category.Id,
+                CategoryName = product.Category.Name,
                 Characteristics = product.Characteristics.ConvertToDto(),
                 Images= product.Images.ConvertToDto(),
                 Descriptions= product.Descriptions.ConvertToDto(),

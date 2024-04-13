@@ -59,7 +59,7 @@ namespace tparf.client.Pages.Shop
                 shoppingCartItems = await ManageCartItemsLocalStorageService.GetCollection();
 				product = await _productService.GetProduct(Id);
                 images = await _productService.GetImagesById(Id);
-                products = await GetProductCollectionFromSubcategory(product.SubcategoryId);
+                products = await GetProductCollectionFromSubcategory(product.CategoryId);
                 characteristics = await _productService.GetCharacteristicById(Id);
 				
 				
@@ -108,7 +108,7 @@ namespace tparf.client.Pages.Shop
             var productCollection = await _manageProductsLocalStorageService.GetCollection();
             if (productCollection != null)
             {
-                return productCollection.Where(p => p.SubcategoryId == subId && p.Id != product.Id).ToList();
+                return productCollection.Where(p => p.CategoryId == subId && p.Id != product.Id).ToList();
             }
 			else
 			{

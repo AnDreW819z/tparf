@@ -15,7 +15,7 @@ namespace tparf.dto.Product
         public decimal Price { get; set; }
         public double Discount { get; set; }
         public long ManufacturerId { get; set; }
-        public long SubcategoryId { get; set; }
+        public long СategoryId { get; set; }
 
     }
 }

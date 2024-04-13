@@ -293,7 +293,12 @@ namespace tparf.api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
                 });
@@ -333,11 +338,9 @@ namespace tparf.api.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("IconCss")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -455,14 +458,15 @@ namespace tparf.api.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Article")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("Discount")
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double?>("Discount")
                         .HasColumnType("double precision");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("ManufacturerId")
@@ -475,14 +479,14 @@ namespace tparf.api.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<long>("SubcategoryId")
+                    b.Property<long>("СategoryId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ManufacturerId");
 
-                    b.HasIndex("SubcategoryId");
+                    b.HasIndex("СategoryId");
 
                     b.ToTable("Products");
                 });
@@ -533,34 +537,6 @@ namespace tparf.api.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages");
-                });
-
-            modelBuilder.Entity("tparf.api.Entities.Subcategory", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("IconCss")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Subcategories");
                 });
 
             modelBuilder.Entity("tparf.api.Entities.TokenInfo", b =>
@@ -638,10 +614,19 @@ namespace tparf.api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("tparf.api.Entities.Category", b =>
+                {
+                    b.HasOne("tparf.api.Entities.Category", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("tparf.api.Entities.Characteristic", b =>
                 {
                     b.HasOne("tparf.api.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Characteristics")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -676,21 +661,21 @@ namespace tparf.api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("tparf.api.Entities.Subcategory", "Subcategory")
+                    b.HasOne("tparf.api.Entities.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("SubcategoryId")
+                        .HasForeignKey("СategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Manufacturer");
+                    b.Navigation("Category");
 
-                    b.Navigation("Subcategory");
+                    b.Navigation("Manufacturer");
                 });
 
             modelBuilder.Entity("tparf.api.Entities.ProductDescription", b =>
                 {
                     b.HasOne("tparf.api.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Descriptions")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -701,7 +686,7 @@ namespace tparf.api.Migrations
             modelBuilder.Entity("tparf.api.Entities.ProductImage", b =>
                 {
                     b.HasOne("tparf.api.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -709,15 +694,18 @@ namespace tparf.api.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("tparf.api.Entities.Subcategory", b =>
+            modelBuilder.Entity("tparf.api.Entities.Category", b =>
                 {
-                    b.HasOne("tparf.api.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Children");
+                });
 
-                    b.Navigation("Category");
+            modelBuilder.Entity("tparf.api.Entities.Product", b =>
+                {
+                    b.Navigation("Characteristics");
+
+                    b.Navigation("Descriptions");
+
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

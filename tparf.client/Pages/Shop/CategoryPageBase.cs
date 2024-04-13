@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using tparf.client.Interfaces;
+using tparf.dto.Categories;
 using tparf.dto.Product;
-using tparf.dto.Subcategories;
 
 namespace tparf.client.Pages.Shop
 {
@@ -11,9 +11,9 @@ namespace tparf.client.Pages.Shop
         public long catId { get; set; }
         [Inject] IProductService productService { get; set; }
         [Inject] IManageProductsLocalStorageService manageProductsLocalStorageService { get; set; }
-        public List<SubcategoryDto> subcategories { get; set; }
-
+        
         public List<ProductDto> products { get; set; }
+        public CategoryDto category { get; set; }
         public string errorMessage { get; set; }
 
         protected override async Task OnParametersSetAsync()
@@ -21,7 +21,7 @@ namespace tparf.client.Pages.Shop
             try
             {
                 await manageProductsLocalStorageService.RemoveCollection();
-                subcategories = await GetSubategoriesCollectionFromCategory(catId);
+                category = await GetCategory(catId);
                 products = await productService.GetProducts();
 
 
@@ -32,9 +32,9 @@ namespace tparf.client.Pages.Shop
             }
         }
 
-        private async Task<List<SubcategoryDto>> GetSubategoriesCollectionFromCategory(long catId)
+        private async Task<CategoryDto> GetCategory(long catId)
         {
-            var subCollection = await productService.GetSubcategoriesFromCategory(catId);
+            var subCollection = await productService.GetCategory(catId);
             if (subCollection != null)
             {
                 return subCollection;

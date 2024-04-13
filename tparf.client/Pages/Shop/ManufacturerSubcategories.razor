@@ -44,7 +44,7 @@ else
 
                                 @foreach (var product in products)
                                 {
-                                    @if (product.SubcategoryId == subcategory.Id && product.ManufacturerId == manId)
+                                    @if (product.CategoryId == subcategory.Id && product.ManufacturerId == manId)
                                     {
                                         productCount++;
                                     }

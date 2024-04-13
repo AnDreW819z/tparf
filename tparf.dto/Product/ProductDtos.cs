@@ -19,8 +19,8 @@ namespace tparf.dto.Product
         public double? Discount { get; set; }
         public long ManufacturerId { get; set; }
         public string ManufacturerName { get; set; }
-        public long SubcategoryId { get; set; }
-        public string SubcategoryName { get; set; }
+        public long CategoryId { get; set; }
+        public string CategoryName { get; set; }
         public virtual List<CharacteristicDto>? Characteristics { get; set; }
         public virtual List<ImageDto>? Images { get; set; }
         public virtual List<DescriptionDto>? Descriptions { get; set; }

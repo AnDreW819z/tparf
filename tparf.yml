@@ -1,0 +1,66 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  tparf_api:
+    image: tparf_api
+    depends_on:
+      - "tparf_db"
+    container_name: tparf_api
+    ports:
+      - 7187:80
+    expose:
+      - 80
+    build:
+      context: .
+      dockerfile: Backend
+    environment:
+      - ConnectionStrings__tparfConnection=Username=postgres;Password=1e2rf3s6wsd6f;Host=tparf_db;Port=5432;Database=tparf_db_1.1;
+      - VIRTUAL_HOST=tparf-api.ru
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=tparf-api.ru
+      - LETSENCRYPT_EMAIL=tparf@internet.ru
+    networks:
+      - dev
+
+  tparf_client:
+    image: tparf_client
+    depends_on:
+      - "tparf_api"
+    container_name: tparf_client
+    ports:
+      - 8080:80
+    expose:
+      - 80
+    build:
+      context: .
+      dockerfile: Frontend
+    environment:
+      - VIRTUAL_HOST=tparf.ru
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=tparf.ru
+      - LETSENCRYPT_EMAIL=tparf@internet.ru
+    networks:
+      - dev
+
+
+  tparf_db:
+    image: postgres:16.2
+    container_name: tparf_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1e2rf3s6wsd6f
+      - POSTGRES_DB:tparf_db_1.1
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    networks:
+      - dev
+      
+volumes:
+  db_volume:

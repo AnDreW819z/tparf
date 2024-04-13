@@ -11,13 +11,16 @@ namespace tparf.api.Entities
         public decimal Price { get; set; }
         public double? Discount { get; set; }
         public long ManufacturerId { get; set; }
-        public long SubcategoryId { get; set; }
+        public long CategoryId { get; set; }
+        public int CurrencyId { get; set; }
+        [ForeignKey("CurrencyId")]
+        public virtual Сurrency Currency { get; set; }
 
         [ForeignKey("ManufacturerId")]
         public virtual Manufacturer Manufacturer { get; set; }
 
-        [ForeignKey("SubcategoryId")]
-        public virtual Subcategory Subcategory { get; set; }
+        [ForeignKey("СategoryId")]
+        public virtual Category Category { get; set; }
         public virtual List<ProductImage>? Images { get; set; }
         public virtual List<Characteristic>? Characteristics { get; set; }
         public virtual List<ProductDescription>? Descriptions { get; set; }

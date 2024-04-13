@@ -1,0 +1,20 @@
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /src
+EXPOSE 80
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY tparf.client/tparf.client.csproj tparf.client/
+COPY tparf.dto/tparf.dto.csproj tparf.dto/
+RUN dotnet restore tparf.client/tparf.client.csproj
+COPY . .
+
+WORKDIR /src/tparf.client
+RUN dotnet build tparf.client.csproj -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish tparf.client.csproj -c Release -o /app/publish
+
+FROM nginx:alpine AS final
+WORKDIR /usr/share/nginx/html
+COPY --from=publish /app/publish/wwwroot .
+COPY ["nginx.conf", "/etc/nginx/nginx.conf"]

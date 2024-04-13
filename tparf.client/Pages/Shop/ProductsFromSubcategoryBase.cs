@@ -24,10 +24,10 @@ namespace tparf.client.Pages.Shop
 
                 if (products != null && products.Count() > 0)
                 {
-                    var productDto = products.FirstOrDefault(p => p.SubcategoryId == subId);
+                    var productDto = products.FirstOrDefault(p => p.CategoryId == subId);
                     if (productDto != null)
                     {
-                        subcategoryName = productDto.SubcategoryName;
+                        subcategoryName = productDto.CategoryName;
                     }
                 }
             }
@@ -42,7 +42,7 @@ namespace tparf.client.Pages.Shop
             var productCollection = await manageProductsLocalStorageService.GetCollection();
             if (productCollection != null)
             {
-                return productCollection.Where(p => p.SubcategoryId == subId).ToList();
+                return productCollection.Where(p => p.CategoryId == subId).ToList();
             }
             else
             {
