@@ -54,7 +54,8 @@ namespace tparf.api.Repository
                     ManufacturerId= productDto.ManufacturerId,
                     Manufacturer = await _tparfDbContext.Manufacturers.Where(p=>p.Id== productDto.ManufacturerId).SingleAsync(),
                     Category = await _tparfDbContext.Categories.Where(p => p.Id == productDto.СategoryId).SingleAsync(),
-                    CategoryId = productDto.СategoryId
+                    CategoryId = productDto.СategoryId,
+                    CurrencyId= productDto.CurrencyId,
                 };
                 if (product != null)
                 {
@@ -87,6 +88,7 @@ namespace tparf.api.Repository
                 var product = await _tparfDbContext.Products.SingleOrDefaultAsync(c => c.Id == id);
                 product.Manufacturer = await _tparfDbContext.Manufacturers.FindAsync(product.ManufacturerId);
                 product.Category = await _tparfDbContext.Categories.FindAsync(product.CategoryId);
+                product.Currency = await _tparfDbContext.Сurrencies.FindAsync(product.CurrencyId);
                 if(product.Images == null || product.Characteristics== null || product.Descriptions == null)
                 {
                     product.Characteristics = await GetCharacteristicsFromProduct(id);
@@ -100,7 +102,7 @@ namespace tparf.api.Repository
 
         public async Task<List<Product>> GetProducts()
         {
-            var products = await _tparfDbContext.Products.Include(p => p.Category).Include(p=> p.Manufacturer).ToListAsync();
+            var products = await _tparfDbContext.Products.Include(p => p.Category).Include(p=> p.Manufacturer).Include(p=>p.Currency).ToListAsync();
             return products;
         }
 
@@ -115,6 +117,7 @@ namespace tparf.api.Repository
                 product.Price = productDto.Price;
                 product.Discount = productDto.Discount;
                 product.CategoryId = productDto.СategoryId;
+                product.CurrencyId = productDto.CurrencyId;
                 await _tparfDbContext.SaveChangesAsync();
                 return product;
             }

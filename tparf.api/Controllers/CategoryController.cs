@@ -67,7 +67,7 @@ namespace tparf.api.Controllers
 
         [HttpGet]
         [Route("getProductsFromCategory/{id:long}")]
-        public async Task<ActionResult<SubcategoryDto>> GetProductsFromCategory(long id)
+        public async Task<ActionResult<CategoryDto>> GetProductsFromCategory(long id)
         {
             try
             {

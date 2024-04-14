@@ -18,5 +18,6 @@ namespace tparf.dto.Product
         public string ManufacturerName { get; set; }
         public long CategoryId { get; set; }
         public string CategoryName { get; set; }
+        public string CurrencySymbol { get; set; }
     }
 }

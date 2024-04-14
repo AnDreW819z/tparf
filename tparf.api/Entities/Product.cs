@@ -14,7 +14,7 @@ namespace tparf.api.Entities
         public long CategoryId { get; set; }
         public int CurrencyId { get; set; }
         [ForeignKey("CurrencyId")]
-        public virtual Сurrency Currency { get; set; }
+        public virtual Сurrencies Currency { get; set; }
 
         [ForeignKey("ManufacturerId")]
         public virtual Manufacturer Manufacturer { get; set; }

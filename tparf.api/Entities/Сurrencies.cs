@@ -1,9 +1,10 @@
 ﻿namespace tparf.api.Entities
 {
-    public class Сurrency
+    public class Сurrencies
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Value { get; set; }
+        public double Value { get; set; }
+        public string Symbol { get; set; }
     }
 }

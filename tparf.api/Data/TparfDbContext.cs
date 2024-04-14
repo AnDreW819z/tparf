@@ -28,6 +28,6 @@ namespace tparf.api.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
-        public DbSet<Сurrency> Сurrencies { get; set; }
+        public DbSet<Сurrencies> Сurrencies { get; set; }
     }
 }

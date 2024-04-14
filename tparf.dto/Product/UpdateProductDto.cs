@@ -15,5 +15,6 @@ namespace tparf.dto.Product
         public double? Discount { get; set; }
         public long СategoryId { get; set; }
         public long ManufacturerId { get; set; }
+        public int CurrencyId {get; set;}
     }
 }
