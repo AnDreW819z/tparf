@@ -12,7 +12,7 @@
                             <MudText Align=@Align.Center Color="Color.Dark" Typo="Typo.body1">@product.Name</MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
-                    @if(product.ImageUrl == null || product.ImageUrl == "string")
+                    @if(product.ImageUrl == null || product.ImageUrl == "string" || product.ImageUrl == "")
                     {
                        <MudCardMedia Image="https://elitas.ru/images/no-image-large.jpg" Height="200" Style="width:250; padding:20; padding-right:20" />  
                     }

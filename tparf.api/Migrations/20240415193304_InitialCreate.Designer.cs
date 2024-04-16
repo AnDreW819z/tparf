@@ -12,8 +12,8 @@ using tparf.api.Data;
 namespace tparf.api.Migrations
 {
     [DbContext(typeof(TparfDbContext))]
-    [Migration("20240414080244_InitialCreate2")]
-    partial class InitialCreate2
+    [Migration("20240415193304_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

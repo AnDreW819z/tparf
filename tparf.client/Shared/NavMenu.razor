@@ -23,12 +23,22 @@
 			{
 				var icon = categoryDto.IconCss;
 				<MudNavGroup Title=@categoryDto.Name Icon="@Icons.Material.Filled.Category" Expanded="false">
-					@foreach (var subcategoryDto in subcategoryDtos)
+					@foreach (var catDto in categoryDto.Children)
 					{
-						if (subcategoryDto.CategoryId == categoryDto.Id)
+						if(catDto.Children != null)
 						{
-							string link = "/subcategory/" + subcategoryDto.Id;
-							<MudNavLink Href="@link" Icon="@Icons.Material.Filled.Casino">@subcategoryDto.Name</MudNavLink>
+							<MudNavGroup Title=@catDto.Name Icon="@Icons.Material.Filled.Category" Expanded="false">
+								@foreach(var cat in catDto.Children)
+								{
+									string link = "/category/" + cat.Id;
+									<MudNavLink Href="@link" Icon="@Icons.Material.Filled.Casino">@cat.Name</MudNavLink>
+								}
+							</MudNavGroup>
+						}
+						if (catDto.ParentId == categoryDto.Id)
+						{
+							string link = "/category/" + catDto.Id;
+							<MudNavLink Href="@link" Icon="@Icons.Material.Filled.Casino">@catDto.Name</MudNavLink>
 						}
 
 					}
@@ -36,7 +46,7 @@
 				</MudNavGroup>
 				
 			}
-			<MudText Align="Align.Center">Производители</MudText>
+			@*<MudText Align="Align.Center">Производители</MudText>
 
 			@foreach (var manufacturerDto in manufacturerDtos)
 			{
@@ -44,7 +54,7 @@
 				string link = $"/manufacturer/{manufacturerDto.Id}";
 				<MudNavLink Href="@link" Icon="@Icons.Material.Filled.PrecisionManufacturing">@manufacturerDto.Name</MudNavLink>
 
-			}
+			}*@
 			
 		}
 		

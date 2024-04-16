@@ -10,10 +10,12 @@ namespace tparf.api.Interfaces
     public interface IProductRepository
     {
         Task<List<Product>> GetProducts();
+        public Task<Product> GetProductByName(string name);
         Task<Product> GetProduct(long id);
         public Task<Product> AddNewProduct(CreateProductDto productDto);
         public Task<Product> UpdateProduct(long id, UpdateProductDto productDto);
         public Task<Status> DeleteProduct(long id);
+        public Task<Status> DeleteAllProducts();
 
         Task<Characteristic> GetCharacteristic(long id);
         public Task<List<Characteristic>> GetCharacteristicsFromProduct(long productId);

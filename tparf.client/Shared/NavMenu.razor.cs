@@ -13,8 +13,6 @@ namespace tparf.client.Shared
         public IProductService productService { get; set; }
         public List<ManufacturerDto> manufacturerDtos { get; set; }
         public List<CategoryDto> categoryDtos { get; set; }
-        public List<SubcategoryDto> subcategoryDtos { get; set; }
-		public List<SubcategoryDto> subcategoryManDtos { get; set; }
 		public string errorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -23,7 +21,6 @@ namespace tparf.client.Shared
             {
                 
                 categoryDtos = await productService.GetCategories();
-                subcategoryDtos= await productService.GetSubcategories();
 				manufacturerDtos = await productService.GetManufacturers();
 
 			}

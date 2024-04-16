@@ -105,15 +105,8 @@ namespace tparf.client.Pages.Shop
 
         private async Task<List<ProductDto>> GetProductCollectionFromSubcategory(long subId)
 		{
-            var productCollection = await _manageProductsLocalStorageService.GetCollection();
-            if (productCollection != null)
-            {
-                return productCollection.Where(p => p.CategoryId == subId && p.Id != product.Id).ToList();
-            }
-			else
-			{
-                return await _productService.GetProductsFromSubcategory(subId);
-            }
+            var productCollection = await _productService.GetProductsFromCategory(subId);
+			return productCollection;
         }
     }
 }

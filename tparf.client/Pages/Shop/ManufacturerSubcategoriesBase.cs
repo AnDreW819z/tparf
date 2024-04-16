@@ -10,7 +10,7 @@ namespace tparf.client.Pages.Shop
         [Parameter]
         public long manId { get; set; }
         [Inject] IProductService productService { get; set; }
-        public List<SubcategoryDto> subcategories { get; set; }
+        //public List<SubcategoryDto> subcategories { get; set; }
 
         public List<ProductDto> products { get; set; }
         public string errorMessage { get; set; }
@@ -19,8 +19,8 @@ namespace tparf.client.Pages.Shop
         {
             try
             {
-                subcategories = await GetSubategoriesCollectionFromManufacturer(manId);
-                products = await productService.GetProducts();
+                //subcategories = await GetSubategoriesCollectionFromManufacturer(manId);
+                //products = await productService.GetProducts();
 
             }
             catch (Exception ex)
@@ -29,17 +29,17 @@ namespace tparf.client.Pages.Shop
             }
         }
 
-        private async Task<List<SubcategoryDto>> GetSubategoriesCollectionFromManufacturer(long Id)
-        {
-            var subCollection = await productService.GetSubcategoriesFromManufacturer(Id);
-            if (subCollection != null)
-            {
-                return subCollection;
-            }
-            else
-            {
-                return default;
-            }
-        }
+        //private async Task<List<SubcategoryDto>> GetSubategoriesCollectionFromManufacturer(long Id)
+        //{
+        //    var subCollection = await productService.GetSubcategoriesFromManufacturer(Id);
+        //    if (subCollection != null)
+        //    {
+        //        return subCollection;
+        //    }
+        //    else
+        //    {
+        //        return default;
+        //    }
+        //}
     }
 }

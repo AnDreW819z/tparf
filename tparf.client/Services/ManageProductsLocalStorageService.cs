@@ -16,23 +16,23 @@ namespace tparf.client.Services
 			_productService = productService;
 		}
 
-		public async Task<List<ProductDto>> GetCollection()
-		{
-			return await _localStorageService.GetItemAsync<List<ProductDto>>(key) ?? await AddCollection();
-		}
+		//public async Task<List<ProductDto>> GetCollection()
+		//{
+		//	return await _localStorageService.GetItemAsync<List<ProductDto>>(key) ?? await AddCollection();
+		//}
 
 		public async Task RemoveCollection()
 		{
 			await _localStorageService.RemoveItemAsync(key);
 		}
-		private async Task<List<ProductDto>> AddCollection()
-		{
-			var productCollection = await _productService.GetProducts();
-			if (productCollection != null)
-			{
-				await _localStorageService.SetItemAsync(key, productCollection);
-			}
-			return productCollection;
-		}
+		//private async Task<List<ProductDto>> AddCollection()
+		//{
+		//	var productCollection = await _productService.GetProducts();
+		//	if (productCollection != null)
+		//	{
+		//		await _localStorageService.SetItemAsync(key, productCollection);
+		//	}
+		//	return productCollection;
+		//}
 	}
 }

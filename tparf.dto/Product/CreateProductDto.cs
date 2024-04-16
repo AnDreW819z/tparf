@@ -11,9 +11,9 @@ namespace tparf.dto.Product
         public long Id { get; set; }
         public string Name { get; set; }
         public string Article { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         public decimal Price { get; set; }
-        public double Discount { get; set; }
+        public double? Discount { get; set; }
         public long ManufacturerId { get; set; }
         public long СategoryId { get; set; }
         public int CurrencyId { get; set; }

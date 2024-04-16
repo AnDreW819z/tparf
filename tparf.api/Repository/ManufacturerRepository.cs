@@ -19,10 +19,13 @@ namespace tparf.api.Repository
         {
             return await _tparfDbContext.Manufacturers.AnyAsync(c => c.Id == manufacturerId);
         }
-
+        private async Task<bool> ManufacturerExist(string manufacturName)
+        {
+            return await _tparfDbContext.Manufacturers.AnyAsync(c => c.Name == manufacturName);
+        }
         public async Task<Manufacturer> AddNewManufacturer(ManufacturerDto manufacturerDto)
         {
-            if (await ManufacturerExist(manufacturerDto.Id) == false)
+            if (await ManufacturerExist(manufacturerDto.Id) == false && await ManufacturerExist(manufacturerDto.Name) == false)
             {
                 Manufacturer manufacturer = new Manufacturer
                 {

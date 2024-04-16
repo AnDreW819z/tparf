@@ -2,6 +2,8 @@
 using tparf.api.Entities;
 using tparf.api.Extensions;
 using tparf.api.Interfaces;
+using tparf.api.ManufacturerSources;
+using tparf.api.Repository;
 using tparf.dto.Auth;
 using tparf.dto.Product;
 using tparf.dto.Product.Characteristics;
@@ -15,10 +17,12 @@ namespace tparf.api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+        private readonly Petropump _petropump;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, Petropump petropump)
         {
             _productRepository = productRepository;
+            _petropump = petropump;
         }
 
         [HttpGet]
@@ -93,6 +97,23 @@ namespace tparf.api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Ошибка создания");
             }
         }
+
+        [HttpPost]
+        [Route("addNewPetropumpProducts")]
+        public async Task<ActionResult> AddNewPetropumpProduct()
+        {
+            try
+            {
+                //await _petropump.Download();
+                await _petropump.AddProducts();
+                return Ok("Готово");
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ошибка создания");
+            }
+        }
+
 
         [HttpPost]
         [Route("addNewProducts")]
@@ -175,18 +196,32 @@ namespace tparf.api.Controllers
         }
 
         [HttpDelete]
-        [Route("deleteProduct/{id:long}")]
+        [Route("DeleteProduct")]
         public async Task<ActionResult<Status>> DeleteProduct(long id)
         {
             try
             {
-                var product = await _productRepository.DeleteProduct(id);
-
-                return Ok(product);
+                var category = await _productRepository.DeleteProduct(id);
+                return category;
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return new Status { Message = ex.Message, StatusCode = 500 };
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteAllProducts")]
+        public async Task<ActionResult<Status>> DeleteAllProducts()
+        {
+            try
+            {
+                var category = await _productRepository.DeleteAllProducts();
+                return category;
+            }
+            catch (Exception ex)
+            {
+                return new Status { Message = ex.Message, StatusCode = 500 };
             }
         }
 

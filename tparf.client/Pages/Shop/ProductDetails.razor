@@ -35,7 +35,7 @@ else
                         }
                     </MudCarousel>
                 }
-                else if (product.ImageUrl != null && product.ImageUrl != "string")
+                else if (product.ImageUrl != null && product.ImageUrl != "string" || product.ImageUrl != "")
                 {
                     <div class="d-flex justify-center">
                         <MudImage Fluid="true" Src="@product.ImageUrl" Style=" max-width:400px; height:auto" Class="justify-center" />

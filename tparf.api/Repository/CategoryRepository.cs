@@ -16,6 +16,10 @@ namespace tparf.api.Repository
             _tparfDbContext = tparfDbContext;
         }
 
+        private async Task<bool> CategoryExist(string catName)
+        {
+            return await _tparfDbContext.Categories.AnyAsync(c => c.Name == catName);
+        }
         private async Task<bool> CategoryExist(long? catId)
         {
             return await _tparfDbContext.Categories.AnyAsync(c => c.Id == catId);
@@ -23,7 +27,7 @@ namespace tparf.api.Repository
 
         public async Task<Category> AddNewCategory(CreateCategoryDto createCatDto)
         {
-            if (await CategoryExist(createCatDto.Id) == false)
+            if (await CategoryExist(createCatDto.Name) == false)
             {
                 if (createCatDto.ParentId != 0 && await CategoryExist(createCatDto.ParentId) == false)
                     return null;
@@ -72,6 +76,13 @@ namespace tparf.api.Repository
             return result;
         }
 
+        public async Task<List<Category>> GetAllCategories()
+        {
+
+            var categories = await _tparfDbContext.Categories.ToListAsync();
+            return categories;
+        }
+
         public async Task<Category> GetCategory(long id)
         {
             if (await CategoryExist(id))
@@ -83,15 +94,30 @@ namespace tparf.api.Repository
             return null;
         }
 
+        public async Task<Status> DeleteAllCategories()
+        {
+            var categories = await _tparfDbContext.Categories.ToListAsync();
+            if (categories != null)
+            {
+                foreach (var category in categories)
+                {
+                    await DeleteCategory(category.Id);
+                }
+                return new Status { Message = "Категории успешно удалены", StatusCode = 200 };
+            }
+            return new Status { Message = "Ошибка удаления", StatusCode = 500 };
+
+        }
+
         public async Task<List<Product>> GetProductFromCategory(long id)
         {
-            var products = await _tparfDbContext.Products.Include(p => p.Category).Include(p => p.Manufacturer).Where(p => p.CategoryId == id).ToListAsync();
+            var products = await _tparfDbContext.Products.Include(p => p.Category).Include(p => p.Manufacturer).Include(c=>c.Currency).Where(p => p.CategoryId == id).ToListAsync();
             return products;
         }
 
         public async Task<List<Category>> GetCategoriesFromManufacturer(long id)
         {
-            var products = await _tparfDbContext.Products.Where(c => c.ManufacturerId == id).Include(s => s.Manufacturer).ToListAsync();
+            var products = await _tparfDbContext.Products.Where(c => c.ManufacturerId == id).Include(s => s.Manufacturer).Include(c=>c.Currency).ToListAsync();
             List<Category> subcategories = new List<Category>();
             foreach (var product in products)
             {

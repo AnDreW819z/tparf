@@ -8,6 +8,7 @@ using tparf.dto.Product.Images;
 using tparf.dto.Product;
 using tparf.dto.Product.Descriptions;
 using System;
+using System.Xml.Linq;
 
 namespace tparf.api.Repository
 {
@@ -20,6 +21,10 @@ namespace tparf.api.Repository
             _tparfDbContext = tparfDbContext;
         }
 
+        private async Task<bool> ProductExist(string productName)
+        {
+            return await _tparfDbContext.Products.AnyAsync(c => c.Name == productName);
+        }
         private async Task<bool> ProductExist(long productId)
         {
             return await _tparfDbContext.Products.AnyAsync(c => c.Id == productId);
@@ -30,11 +35,25 @@ namespace tparf.api.Repository
             return await _tparfDbContext.Characteristics.AnyAsync(c => c.Id == charId);
         }
 
+        private async Task<bool> CharacteristicExist(long prodId, string name)
+        {
+            var product = await GetProduct(prodId);
+            if (product.Characteristics == null)
+                return false;
+            return product.Characteristics.Any(c => c.Name == name);
+        }
+
         private async Task<bool> ImageExist(long imgId)
         {
             return await _tparfDbContext.ProductImages.AnyAsync(c => c.Id == imgId);
         }
-
+        private async Task<bool> DescriptionExist(long productId, string text)
+        {
+            var product = await GetProduct(productId);
+            if (product.Descriptions == null)
+                return false;
+            return product.Descriptions.Any(c => c.Text == text);
+        }
         private async Task<bool> DescriptionExist(long desId)
         {
             return await _tparfDbContext.Descriptions.AnyAsync(c => c.Id == desId);
@@ -42,7 +61,7 @@ namespace tparf.api.Repository
 
         public async Task<Product> AddNewProduct(CreateProductDto productDto)
         {
-            if (await ProductExist(productDto.Id) == false)
+            if (await ProductExist(productDto.Id) == false && await ProductExist(productDto.Name) == false)
             {
                 Product product = new Product
                 {
@@ -65,6 +84,21 @@ namespace tparf.api.Repository
                 }
             }
             return null;
+        }
+
+        public async Task<Status> DeleteAllProducts()
+        {
+            var categories = await _tparfDbContext.Products.ToListAsync();
+            if (categories != null)
+            {
+                foreach (var category in categories)
+                {
+                    await DeleteProduct(category.Id);
+                }
+                return new Status { Message = "Категории успешно удалены", StatusCode = 200 };
+            }
+            return new Status { Message = "Ошибка удаления", StatusCode = 500 };
+
         }
 
         public async Task<Status> DeleteProduct(long id)
@@ -95,6 +129,25 @@ namespace tparf.api.Repository
                     product.Images= await GetImagesFromProduct(id);
                     product.Descriptions= await GetDescriptionsFromProduct(id);
                 }
+                return product;
+            }
+            return default;
+        }
+        public async Task<Product> GetProductByName(string name)
+        {
+
+            if (await ProductExist(name))
+            {
+                var product = await _tparfDbContext.Products.Where(c => c.Name == name).FirstOrDefaultAsync();
+                product.Manufacturer = await _tparfDbContext.Manufacturers.FindAsync(product.ManufacturerId);
+                product.Category = await _tparfDbContext.Categories.FindAsync(product.CategoryId);
+                product.Currency = await _tparfDbContext.Сurrencies.FindAsync(product.CurrencyId);
+                //if (product.Images == null || product.Characteristics == null || product.Descriptions == null)
+                //{
+                //    product.Characteristics = await GetCharacteristicsFromProduct(product.Id);
+                //    product.Images = await GetImagesFromProduct(product.Id);
+                //    product.Descriptions = await GetDescriptionsFromProduct(product.Id);
+                //}
                 return product;
             }
             return default;
@@ -132,7 +185,7 @@ namespace tparf.api.Repository
 
         public async Task<Characteristic> AddNewCharacteristic(CharacteristicDto characteristicDto)
         {
-            if (await CharacteristicExist(characteristicDto.Id) == false)
+            if (await CharacteristicExist(characteristicDto.ProductId, characteristicDto.Name) == false)
             {
                 Characteristic characteristic = new Characteristic
                 {
@@ -265,7 +318,7 @@ namespace tparf.api.Repository
 
         public async Task<ProductDescription> AddNewDescription(DescriptionDto descDto)
         {
-            if (await DescriptionExist(descDto.Id) == false)
+            if (await DescriptionExist(descDto.ProductId, descDto.Text) == false)
             {
                 ProductDescription description = new ProductDescription
                 {

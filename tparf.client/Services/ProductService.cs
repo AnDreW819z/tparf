@@ -124,11 +124,11 @@ namespace tparf.client.Services
             }
         }
 
-        public async Task<List<ProductDto>> GetProductsFromSubcategory(long subId)
+        public async Task<List<ProductDto>> GetProductsFromCategory(long catId)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"api/Subcategory/{subId}/getProducts");
+                var response = await _httpClient.GetAsync($"api/Category/getProductsFromCategory/{catId}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -230,59 +230,59 @@ namespace tparf.client.Services
 
         }
 
-        public async Task<List<SubcategoryDto>> GetSubcategoriesFromCategory(long catId)
-        {
-            try
-            {
-                var response = await _httpClient.GetAsync($"api/Category/{catId}/getSubcategories");
+        //public async Task<List<SubcategoryDto>> GetSubcategoriesFromCategory(long catId)
+        //{
+        //    try
+        //    {
+        //        var response = await _httpClient.GetAsync($"api/Category/{catId}/getSubcategories");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-                    {
-                        return default;
-                    }
-                    return await response.Content.ReadFromJsonAsync<List<SubcategoryDto>>();
-                }
-                else
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Http Status Code - {response.StatusCode} Message - {message}");
-                }
-            }
-            catch
-            {
-                throw;
-            }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+        //            {
+        //                return default;
+        //            }
+        //            return await response.Content.ReadFromJsonAsync<List<SubcategoryDto>>();
+        //        }
+        //        else
+        //        {
+        //            var message = await response.Content.ReadAsStringAsync();
+        //            throw new Exception($"Http Status Code - {response.StatusCode} Message - {message}");
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
 
-        }
+        //}
 
-        public async Task<List<SubcategoryDto>> GetSubcategoriesFromManufacturer(long manId)
-        {
-            try
-            {
-                var response = await _httpClient.GetAsync($"api/Subcategory/{manId}/getSubcategoriesFromManufacturer");
+        //public async Task<List<SubcategoryDto>> GetSubcategoriesFromManufacturer(long manId)
+        //{
+        //    try
+        //    {
+        //        var response = await _httpClient.GetAsync($"api/Subcategory/{manId}/getSubcategoriesFromManufacturer");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-                    {
-                        return default;
-                    }
-                    return await response.Content.ReadFromJsonAsync<List<SubcategoryDto>>();
-                }
-                else
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Http Status Code - {response.StatusCode} Message - {message}");
-                }
-            }
-            catch
-            {
-                throw;
-            }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+        //            {
+        //                return default;
+        //            }
+        //            return await response.Content.ReadFromJsonAsync<List<SubcategoryDto>>();
+        //        }
+        //        else
+        //        {
+        //            var message = await response.Content.ReadAsStringAsync();
+        //            throw new Exception($"Http Status Code - {response.StatusCode} Message - {message}");
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
 
-        }
+        //}
 
         public async Task<List<CategoryDto>> GetCategories()
 		{
@@ -296,31 +296,6 @@ namespace tparf.client.Services
 						return default;
 					}
 					return await response.Content.ReadFromJsonAsync<List<CategoryDto>>();
-				}
-				else
-				{
-					var message = await response.Content.ReadAsStringAsync();
-					throw new Exception($"Http Status Code - {response.StatusCode} Message - {message}");
-				}
-			}
-			catch
-			{
-				throw;
-			}
-		}
-
-        public async Task<List<SubcategoryDto>> GetSubcategories()
-		{
-			try
-			{
-				var response = await _httpClient.GetAsync("api/Subcategory/getSubcategories");
-				if (response.IsSuccessStatusCode)
-				{
-					if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-					{
-						return default;
-					}
-					return await response.Content.ReadFromJsonAsync<List<SubcategoryDto>>();
 				}
 				else
 				{

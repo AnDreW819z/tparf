@@ -13,6 +13,21 @@ namespace tparf.api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Сurrencies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<double>(type: "double precision", nullable: false),
+                    Symbol = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Сurrencies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -286,6 +301,7 @@ namespace tparf.api.Migrations
                     Discount = table.Column<double>(type: "double precision", nullable: true),
                     ManufacturerId = table.Column<long>(type: "bigint", nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    CurrencyId = table.Column<int>(type: "integer", nullable: false),
                     СategoryId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -301,6 +317,12 @@ namespace tparf.api.Migrations
                         name: "FK_Products_Manufacturers_ManufacturerId",
                         column: x => x.ManufacturerId,
                         principalTable: "Manufacturers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_Сurrencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Сurrencies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -473,6 +495,11 @@ namespace tparf.api.Migrations
                 column: "СategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_CurrencyId",
+                table: "Products",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_ManufacturerId",
                 table: "Products",
                 column: "ManufacturerId");
@@ -537,6 +564,9 @@ namespace tparf.api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Manufacturers");
+
+            migrationBuilder.DropTable(
+                name: "Сurrencies");
         }
     }
 }

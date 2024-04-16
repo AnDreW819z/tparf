@@ -11,7 +11,7 @@ namespace tparf.client.Pages.Shop
         [Inject] IManageProductsLocalStorageService manageProductsLocalStorageService { get; set; }
         public List<CategoryDto> categories { get; set; }
 
-        public List<SubcategoryDto> subcategories { get; set; }
+        //public List<SubcategoryDto> subcategories { get; set; }
         public string manufacturerName { get; set; }
         public string errorMessage { get; set; }
 
@@ -21,7 +21,6 @@ namespace tparf.client.Pages.Shop
             {
                 await manageProductsLocalStorageService.RemoveCollection();
                 categories = await GetCategoriesCollection();
-                subcategories = await productService.GetSubcategories();
 
                 
             }

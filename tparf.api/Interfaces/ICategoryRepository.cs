@@ -14,5 +14,7 @@ namespace tparf.api.Interfaces
         public Task<Category> AddNewCategory(CreateCategoryDto createCatDto);
         public Task<Category> UpdateCategory(long id, UpdateCategoryDto updateCatDto);
         public Task<Status> DeleteCategory(long id);
+        public Task<Status> DeleteAllCategories();
+        public Task<List<Category>> GetAllCategories();
     }
 }

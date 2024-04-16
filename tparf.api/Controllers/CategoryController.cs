@@ -153,11 +153,27 @@ namespace tparf.api.Controllers
             }
         }
         [HttpDelete]
+        [Route("DeleteCategory")]
         public async Task<ActionResult<Status>> DeleteCategory(long id)
         {
             try
             {
                 var category = await _categoryRepository.DeleteCategory(id);
+                return category;
+            }
+            catch (Exception ex)
+            {
+                return new Status { Message = ex.Message, StatusCode = 500 };
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteAllCategories")]
+        public async Task<ActionResult<Status>> DeleteAllCategories()
+        {
+            try
+            {
+                var category = await _categoryRepository.DeleteAllCategories();
                 return category;
             }
             catch (Exception ex)

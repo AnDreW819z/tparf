@@ -1,7 +1,7 @@
 ﻿@page "/manufacturer/{manId:long}"
 @inherits ManufacturerSubcategoriesBase
 
-@if (subcategories == null && errorMessage == null)
+@if (products == null && errorMessage == null)
 {
     <DisplaySpinner />
 }
@@ -16,7 +16,7 @@ else
             <MudText Typo="Typo.h4" Align="Align.Center">@products.First().ManufacturerName</MudText>
         </MudItem>
         
-        @foreach (var subcategory in subcategories)
+        @*@foreach (var subcategory in subcategories)
         {
             int productCount = 0;
             string link = $"/manufacturer/{manId}/subcategory/{subcategory.Id}";
@@ -57,6 +57,6 @@ else
             </MudItem>
 
 
-        }
+        }*@
     </MudGrid>
 }

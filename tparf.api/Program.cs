@@ -8,6 +8,7 @@ using tparf.api.Data;
 using tparf.api.EmailSender;
 using tparf.api.Entities;
 using tparf.api.Interfaces;
+using tparf.api.ManufacturerSources;
 using tparf.api.Repository;
 using tparf.api.Service;
 
@@ -79,6 +80,7 @@ var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<Ema
 builder.Services.AddSingleton(emailConfig);
 
 // Inject app Dependencies (Dependency Injection)
+builder.Services.AddScoped<Petropump>();
 builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();

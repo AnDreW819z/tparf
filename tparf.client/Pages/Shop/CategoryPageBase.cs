@@ -22,7 +22,7 @@ namespace tparf.client.Pages.Shop
             {
                 await manageProductsLocalStorageService.RemoveCollection();
                 category = await GetCategory(catId);
-                products = await productService.GetProducts();
+                products = await productService.GetProductsFromCategory(catId);
 
 
             }
