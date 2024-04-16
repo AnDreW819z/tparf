@@ -210,20 +210,20 @@ namespace tparf.api.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("DeleteAllProducts")]
-        public async Task<ActionResult<Status>> DeleteAllProducts()
-        {
-            try
-            {
-                var category = await _productRepository.DeleteAllProducts();
-                return category;
-            }
-            catch (Exception ex)
-            {
-                return new Status { Message = ex.Message, StatusCode = 500 };
-            }
-        }
+        //[HttpDelete]
+        //[Route("DeleteAllProducts")]
+        //public async Task<ActionResult<Status>> DeleteAllProducts()
+        //{
+        //    try
+        //    {
+        //        var category = await _productRepository.DeleteAllProducts();
+        //        return category;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new Status { Message = ex.Message, StatusCode = 500 };
+        //    }
+        //}
 
         /////////// Characteristics //////////////
 

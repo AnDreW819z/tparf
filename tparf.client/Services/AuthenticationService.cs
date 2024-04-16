@@ -18,7 +18,7 @@ namespace tparf.client.Services
 			_httpClient = httpClient;
 			_localStorage = localStorage;
 			_authStateProvider = authStateProvider;
-			baseUrl = /*"https://tparf-api.ru:443/api/Authorization"*/ "http://localhost:5149/api/Authorization";
+			baseUrl = "https://tparf-api.ru:443/api/Authorization" /*"http://localhost:5149/api/Authorization"*/;
 		}
 		public async Task<LoginResponse> Login(LoginModel model)
 		{

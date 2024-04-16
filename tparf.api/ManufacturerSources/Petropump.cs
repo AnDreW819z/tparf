@@ -39,15 +39,19 @@ namespace tparf.api.ManufacturerSources
             }
             Console.WriteLine("Complete");
             //await AddCategories();
-            await AddManufacturer();
+            //await AddManufacturer();
+
         }
         public async Task<bool> CategoryExist(string categoryName)
         {
             if (categoryName == "Оборудование для перекачки и учета ГСМ")
             {
+                Console.WriteLine($"Cat:{categoryName} создана");
                return true;
             }
-            return false;
+            Console.WriteLine($"Cat:{categoryName} не создана");
+
+			return false;
         }
 
         public async Task<List<CreateCategoryDto>> AddCategories()
@@ -126,6 +130,7 @@ namespace tparf.api.ManufacturerSources
                     petropumpCats.Add(petropumpCat);
                 }
             }
+            Console.WriteLine("Категории созданы");
             return petropumpCats;
         }
 
@@ -155,6 +160,7 @@ namespace tparf.api.ManufacturerSources
                     ImageUrl = ""
                 });
             }
+            Console.WriteLine("Производители созданы");
 
         }
 

@@ -27,20 +27,22 @@
 					{
 						if(catDto.Children != null)
 						{
-							<MudNavGroup Title=@catDto.Name Icon="@Icons.Material.Filled.Category" Expanded="false">
-								@foreach(var cat in catDto.Children)
-								{
-									string link = "/category/" + cat.Id;
-									<MudNavLink Href="@link" Icon="@Icons.Material.Filled.Casino">@cat.Name</MudNavLink>
-								}
-							</MudNavGroup>
+							@if(catDto.Children.Count > 0)
+							{
+								<MudNavGroup Title=@catDto.Name Icon="@Icons.Material.Filled.Category" Expanded="false">
+									@foreach (var cat in catDto.Children)
+									{
+										string link = "/category/" + cat.Id;
+										<MudNavLink Href="@link" Icon="@Icons.Material.Filled.Casino">@cat.Name</MudNavLink>
+									}
+								</MudNavGroup>
+							}
 						}
-						if (catDto.ParentId == categoryDto.Id)
+						if (catDto.ParentId == categoryDto.Id && catDto.Children == null)
 						{
 							string link = "/category/" + catDto.Id;
 							<MudNavLink Href="@link" Icon="@Icons.Material.Filled.Casino">@catDto.Name</MudNavLink>
 						}
-
 					}
 
 				</MudNavGroup>

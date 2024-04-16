@@ -18,7 +18,7 @@ else
                 <DisplayCategories categories="category.Children"></DisplayCategories>
             </MudItem>
         }
-        @if(products != null)
+        @if(products.Count > 0)
         {
             <MudItem xs="12">
                 <DisplayProducts products="products"></DisplayProducts>
